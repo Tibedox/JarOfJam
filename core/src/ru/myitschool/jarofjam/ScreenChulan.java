@@ -10,16 +10,22 @@ public class ScreenChulan implements Screen {
     final JarOfJam j;
 
     Texture imgBG;
+    Texture imgRecipe;
 
     JojButton btnGoHouse;
+    JojButton btnRecipe;
+    boolean isRecipeShow;
 
     ScreenChulan(JarOfJam j) {
         this.j = j;
 
-        imgBG = new Texture("chulan.jpg");
+        imgBG = new Texture("screens/chulan.jpg");
+        imgRecipe = new Texture("recipe.jpg");
 
         // кнопка переход в дом
         btnGoHouse = new JojButton(121 * KX, 200 * KY, 330 * KX, 600 * KY, 280*KX);
+        // кнопка спотреть рецепт
+        btnRecipe = new JojButton(932 * KX, 352 * KY, 110 * KX, 75 * KY, 400*KX);
 
         // создаём артефакты, которые будут на этом уровне
         j.artefacts[HONEY] = new Artefact(HONEY, 660 * KX, 480 * KY, 120 * KX, 120 * KY, CHULAN, 1660 * KX, 625 * KY, 150 * KX, 115 * KY, HOUSE, 1660 * KX, 620 * KY, j.imgArt[HONEY], j.basket);
@@ -39,6 +45,10 @@ public class ScreenChulan implements Screen {
         if (Gdx.input.justTouched()) {
             j.touch.set((float) Gdx.input.getX(), (float) Gdx.input.getY(), 0);
             j.camera.unproject(j.touch);
+
+            // смотрим рецепт
+            if(isRecipeShow) isRecipeShow = false;
+            else if (btnRecipe.hit(j.touch.x, j.touch.y)) isRecipeShow = true;
 
             if (btnGoHouse.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnGoHouse.girlWannaPlaceX);
         }
@@ -88,7 +98,7 @@ public class ScreenChulan implements Screen {
             j.girl.artefact = null;
         }*/
 
-        // отрисовка
+        //********************* отрисовка ************************************
         j.camera.update();
         j.batch.setProjectionMatrix(j.camera.combined);
         j.batch.begin();
@@ -111,6 +121,7 @@ public class ScreenChulan implements Screen {
         }
         j.batch.draw(j.imgBasket, j.basket.x, j.basket.y, j.basket.width, j.basket.height); // сама корзинка
         j.batch.draw(j.imgCross, j.btnGoMenu.x, j.btnGoMenu.y, j.btnGoMenu.width, j.btnGoMenu.height); // выход в главное меню
+        if(isRecipeShow) j.batch.draw(imgRecipe, 0, 0, SCR_WIDTH, SCR_HEIGHT);
 
         j.batch.end();
     }

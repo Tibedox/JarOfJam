@@ -14,7 +14,7 @@ public class ScreenSwamp implements Screen {
     ScreenSwamp(JarOfJam j) {
         this.j = j;
 
-        imgBG = new Texture("forrest.jpg");
+        imgBG = new Texture("screens/swamp.jpg");
 
         // кнопка переход в FIELD
         btnGoField = new JojButton(SCR_WIDTH-j.girl.width/2, 200*KY, SCR_WIDTH-j.girl.width/2-100*KX, 300*KY, SCR_WIDTH-j.girl.width/2);

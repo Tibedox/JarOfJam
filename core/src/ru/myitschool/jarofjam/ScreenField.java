@@ -14,7 +14,7 @@ public class ScreenField implements Screen {
     ScreenField(JarOfJam j) {
         this.j = j;
 
-        imgBG = new Texture("field.jpg");
+        imgBG = new Texture("screens/field.jpg");
 
         // кнопка переход в дом
         btnGoHome = new JojButton(SCR_WIDTH-j.girl.width/2, 200*KY, SCR_WIDTH-j.girl.width/2-100*KX, 300*KY, SCR_WIDTH-j.girl.width/2);

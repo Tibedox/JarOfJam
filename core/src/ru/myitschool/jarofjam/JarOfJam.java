@@ -26,7 +26,7 @@ public class JarOfJam extends Game {
     public static final int EMPTYJAR = 14, POT = 15;
     public static final int N_ARTEFACTS = 16;
     // экраны
-    public static final int MENU = 0, HOUSE = 1, FIELD = 2, FORREST = 3, SWAMP = 4, CHULAN = 5;
+    public static final int MENU = 0, HOUSE = 1, FIELD = 2, FORREST = 3, SWAMP = 4, CHULAN = 5, INTRO = 6;
     public static int current_SCREEN, previous_SCREEN = CHULAN; // активный экран
     // задания
     public static boolean quest_KEY, quest_ROPE, quest_HONEY;
@@ -35,10 +35,11 @@ public class JarOfJam extends Game {
     OrthographicCamera camera;
     Vector3 touch;
 
-    BitmapFont fontMenu, fontGame;
+    BitmapFont fontMenu, fontGame, fontIntro;
 
     // объекты экранов
     ScreenMenu screenMenu;
+    ScreenIntro screenIntro;
     ScreenChulan screenChulan;
     ScreenHouse screenHouse;
     ScreenField screenField;
@@ -72,7 +73,9 @@ public class JarOfJam extends Game {
         parameter.borderWidth = 2;
         fontMenu = generator.generateFont(parameter);
         parameter.size = (int)(50*KX);
-        parameter.color = Color.DARK_GRAY;
+        parameter.borderWidth = 4;
+        parameter.color = Color.WHITE;
+        parameter.borderColor = Color.DARK_GRAY;
         fontGame = generator.generateFont(parameter);
         generator.dispose();
 
@@ -80,15 +83,15 @@ public class JarOfJam extends Game {
         imgCross = new Texture("menu.png");
 
         // картинки артефактов
-        imgArt[HONEY] = new Texture("honey.png");
-        for (int i = TREE1, j=1; i <= TREE5; i++, j++) imgArt[i] = new Texture("tree"+j+".png");
-        imgArt[ROPE] = new Texture("rope.png");
-        imgArt[KEY] = new Texture("key.png");
-        imgArt[JUGWATER] = new Texture("jugwater.png");
-        imgArt[SUGAR] = new Texture("sugar.png");
-        for (int i = FRAGMENT1, j=1; i <= FRAGMENT4; i++, j++) imgArt[i] = new Texture("fragment"+j+".png");
-        imgArt[EMPTYJAR] = new Texture("emptyjar.png");
-        imgArt[POT] = new Texture("pot.png");
+        imgArt[HONEY] = new Texture("artefacts/honey.png");
+        for (int i = TREE1, j=1; i <= TREE5; i++, j++) imgArt[i] = new Texture("artefacts/tree"+j+".png");
+        imgArt[ROPE] = new Texture("artefacts/rope.png");
+        imgArt[KEY] = new Texture("artefacts/key.png");
+        imgArt[JUGWATER] = new Texture("artefacts/jugwater.png");
+        imgArt[SUGAR] = new Texture("artefacts/sugar.png");
+        for (int i = FRAGMENT1, j=1; i <= FRAGMENT4; i++, j++) imgArt[i] = new Texture("artefacts/fragment"+j+".png");
+        imgArt[EMPTYJAR] = new Texture("artefacts/emptyjar.png");
+        imgArt[POT] = new Texture("artefacts/pot.png");
 
         imgPanel = new Texture("inventory.png");
 
@@ -101,6 +104,7 @@ public class JarOfJam extends Game {
         Gdx.input.setInputProcessor(new JarTouch(this));
 
         this.screenMenu = new ScreenMenu(this);
+        this.screenIntro = new ScreenIntro(this);
         this.screenChulan = new ScreenChulan(this);
         this.screenHouse = new ScreenHouse(this);
         this.screenField = new ScreenField(this);

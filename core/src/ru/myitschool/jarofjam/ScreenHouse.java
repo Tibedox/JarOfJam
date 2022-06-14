@@ -24,7 +24,7 @@ public class ScreenHouse implements Screen {
 
         imgTable = new Texture("table.png");
         imgPech = new Texture("peh.png");
-        imgBG = new Texture("house.jpg");
+        imgBG = new Texture("screens/house.jpg");
         imgBasket2 = new Texture("basket2.png");
         imgGrandma = new Texture("grandmother.png");
         imgSpider = new Texture("spider.png");
