@@ -26,14 +26,14 @@ public class ScreenChulan implements Screen {
         //btnGoHouse = new JojButton(125 * KX, 240 * KY, 186 * KX, 728 * KY, j.girl.width/2);
         btnGoHouse = new JojButton(0, 200*KY, 100*KX, 300*KY, j.girl.width/2);
         // кнопка спотреть рецепт
-        btnRecipe = new JojButton(932 * KX, 352 * KY, 110 * KX, 75 * KY, 400*KX);
+        btnRecipe = new JojButton(932 * KX, 432 * KY, 110 * KX, 75 * KY, 400*KX);
 
         // создаём артефакты, которые будут на этом уровне
-        j.artefacts[HONEY] = new Artefact(HONEY, 660 * KX, 480 * KY, 120 * KX, 120 * KY, CHULAN, 1660 * KX, 625 * KY, 150 * KX, 115 * KY, HOUSE, 1660 * KX, 620 * KY, j);
-        j.artefacts[JAROGJAM] = new Artefact(JAROGJAM, 590 * KX, 620 * KY, 68 * KX, 96 * KY, CHULAN, 1660 * KX, 625 * KY, 150 * KX, 115 * KY, HOUSE, 1660 * KX, 620 * KY, j);
-        j.artefacts[POT] = new Artefact(POT, 420 * KX, 614 * KY, 162 * KX, 111 * KY, CHULAN, 1660 * KX, 625 * KY, 150 * KX, 115 * KY, HOUSE, 1660 * KX, 620 * KY, j);
-        j.artefacts[FRAGMENT2] = new Artefact(FRAGMENT2, 720 * KX, 618 * KY, 52 * KX, 50 * KY, CHULAN, 1660 * KX, 625 * KY, 150 * KX, 115 * KY, HOUSE, 1660 * KX, 620 * KY, j);
-        j.artefacts[FRAGMENT3] = new Artefact(FRAGMENT3, 1080 * KX, 370 * KY, 81 * KX, 58 * KY, CHULAN, 1660 * KX, 625 * KY, 150 * KX, 115 * KY, HOUSE, 1660 * KX, 620 * KY, j);
+        j.artefacts[HONEY] = new Artefact(HONEY, 660 * KX, 560 * KY, 120 * KX, 120 * KY, CHULAN, 1660 * KX, 625 * KY, 150 * KX, 115 * KY, HOUSE, 1660 * KX, 620 * KY, j);
+        j.artefacts[JAROGJAM] = new Artefact(JAROGJAM, 590 * KX, 700 * KY, 68 * KX, 96 * KY, CHULAN, 1660 * KX, 625 * KY, 150 * KX, 115 * KY, HOUSE, 1660 * KX, 620 * KY, j);
+        j.artefacts[POT] = new Artefact(POT, 420 * KX, 694 * KY, 162 * KX, 111 * KY, CHULAN, 1660 * KX, 625 * KY, 150 * KX, 115 * KY, HOUSE, 1660 * KX, 620 * KY, j);
+        j.artefacts[FRAGMENT2] = new Artefact(FRAGMENT2, 720 * KX, 698 * KY, 52 * KX, 50 * KY, CHULAN, 1660 * KX, 625 * KY, 150 * KX, 115 * KY, HOUSE, 1660 * KX, 620 * KY, j);
+        j.artefacts[FRAGMENT3] = new Artefact(FRAGMENT3, 1080 * KX, 450 * KY, 81 * KX, 58 * KY, CHULAN, 1660 * KX, 625 * KY, 150 * KX, 115 * KY, HOUSE, 1660 * KX, 620 * KY, j);
     }
 
     public void show() {
