@@ -65,7 +65,8 @@ public class ScreenHouse implements Screen {
         j.artefacts[ROPE] = new Artefact(ROPE, 1420*KX, 218*KY, 200*KX, 200*KY, HOUSE, 145*KX, 368*KY, 377*KX, 492*KY, FORREST, 145*KX, 300*KY, j);
         j.artefacts[JUGWATER] = new Artefact(JUGWATER, 200*KX, 420*KY, 124*KX, 154*KY, HOUSE, 1660*KX, 625*KY, 150*KX, 115*KY, HOUSE, -1660*KX, 0*KY, j);
         j.artefacts[MATCHES] = new Artefact(MATCHES, 320*KX, 420*KY, 85*KX, 36*KY, HOUSE, 1740*KX, 430*KY, 75*KX, 123*KY, HOUSE, -1660*KX, 0*KY, j);
-        j.artefacts[FRAGMENT1] = new Artefact(FRAGMENT1, 1500*KX, 675*KY, 50*KX, 54*KY, HOUSE, 1660*KX, 625*KY, 150*KX, 115*KY, HOUSE, 1660*KX, 620*KY, j);
+        j.artefacts[FRAGMENT1] = new Artefact(FRAGMENT1, 1500*KX, 675*KY, 50*KX, 54*KY, HOUSE, 255 * KX, 315 * KY, 150 * KX, 145 * KY, FORREST, 358 * KX, 385 * KY, j);
+        j.artefacts[FRAGMENT4] = new Artefact(FRAGMENT4, 1684*KX, 190*KY, 80*KX, 60*KY, HOUSE, 255 * KX, 315 * KY, 150 * KX, 145 * KY, FORREST, 286 * KX, 372 * KY, j);
     }
 
     public void show () {
@@ -135,6 +136,10 @@ public class ScreenHouse implements Screen {
         }
         if(j.artefacts[FRAGMENT1].hit(j.girl.x) && j.girl.artefact == j.artefacts[FRAGMENT1] && !j.artefacts[FRAGMENT1].inBasket) {
             j.basket.addArtefact(j.artefacts[FRAGMENT1]);
+            j.girl.artefact = null;
+        }
+        if(j.artefacts[FRAGMENT4].hit(j.girl.x) && j.girl.artefact == j.artefacts[FRAGMENT4] && !j.artefacts[FRAGMENT4].inBasket) {
+            j.basket.addArtefact(j.artefacts[FRAGMENT4]);
             j.girl.artefact = null;
         }
 
