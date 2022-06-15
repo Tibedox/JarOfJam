@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 public class ScreenMenu implements Screen {
     final JarOfJam j;
 
-    JojButton btnIntro, btnPlay, btnLoad, btnOptions, btnExit;
+    JojButton btnIntro, btnPlay, btnLoad, btnSave, btnExit;
     Texture imgBG;
 
     ScreenMenu(JarOfJam j) {
@@ -19,7 +19,7 @@ public class ScreenMenu implements Screen {
         btnIntro = new JojButton("Вступление", j.fontMenu, 960*KX, (128+5*160)*KY);
         btnPlay = new JojButton("Играть", j.fontMenu, 960*KX, (128+4*160)*KY);
         btnLoad = new JojButton("Загрузить", j.fontMenu, 960*KX, (128+3*160)*KY);
-        btnOptions = new JojButton("Настройки", j.fontMenu, 960*KX, (128+2*160)*KY);
+        btnSave = new JojButton("Сохранить", j.fontMenu, 960*KX, (128+2*160)*KY);
         btnExit = new JojButton("Выход", j.fontMenu, 960*KX, (128+1*160)*KY);
     }
 
@@ -42,7 +42,12 @@ public class ScreenMenu implements Screen {
 
             if (btnLoad.hit(j.touch.x, j.touch.y)) {
                 j.loadGame();
-                j.setScreen(getScreen(current_SCREEN));
+                j.setScreen(getScreen(previous_SCREEN));
+            }
+
+            if (btnSave.hit(j.touch.x, j.touch.y)) {
+                j.saveGame();
+                j.setScreen(getScreen(previous_SCREEN));
             }
 
             if (btnExit.hit(j.touch.x, j.touch.y)) {
@@ -58,7 +63,7 @@ public class ScreenMenu implements Screen {
         j.fontMenu.draw(j.batch, btnIntro.text, btnIntro.x, btnIntro.y);
         j.fontMenu.draw(j.batch, btnPlay.text, btnPlay.x, btnPlay.y);
         j.fontMenu.draw(j.batch, btnLoad.text, btnLoad.x, btnLoad.y);
-        j.fontMenu.draw(j.batch, btnOptions.text, btnOptions.x, btnOptions.y);
+        j.fontMenu.draw(j.batch, btnSave.text, btnSave.x, btnSave.y);
         j.fontMenu.draw(j.batch, btnExit.text, btnExit.x, btnExit.y);
 
         j.batch.end();
@@ -69,6 +74,7 @@ public class ScreenMenu implements Screen {
             case HOUSE: return j.screenHouse;
             case INTRO: return j.screenIntro;
             case CHULAN: return j.screenChulan;
+            case GARDEN: return j.screenGarden;
             case FIELD: return j.screenField;
             case FORREST: return j.screenForrest;
             default: return j.screenMenu;

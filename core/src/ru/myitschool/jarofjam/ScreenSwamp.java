@@ -27,7 +27,7 @@ public class ScreenSwamp implements Screen {
 
     @Override
     public void show() {
-        current_SCREEN = FORREST;
+        current_SCREEN = SWAMP;
     }
 
     @Override
@@ -64,18 +64,18 @@ public class ScreenSwamp implements Screen {
         j.batch.draw(imgBG, 0, 0, SCR_WIDTH, SCR_HEIGHT);
 
         // артефакты не в корзине
-        for(Artefact a: j.artefacts)
-            if(a != null && !a.inBasket && a.startScreen == FIELD)
-                j.batch.draw(a.img, a.x, a.y, a.width, a.height);
+        for (Artefact a : j.artefacts)
+            if (a != null && !a.inBasket && a.startScreen == SWAMP)
+                j.batch.draw(j.imgArt[a.name], a.x, a.y, a.width, a.height);
 
         // девочка
-        j.batch.draw(j.imgGirl[j.girl.faza], j.girl.x-j.girl.width/2, j.girl.y, j.girl.width/2, 0, j.girl.width, j.girl.height, j.girl.goLeft?1:-1, 1, 0);
+        j.batch.draw(j.imgGirl[j.girl.faza], j.girl.x - j.girl.width / 2, j.girl.y, j.girl.width / 2, 0, j.girl.width, j.girl.height, j.girl.goLeft ? 1 : -1, 1, 0);
 
         // корзина
-        if(j.basket.isOpen) {
-            j.batch.draw(j.imgPanel, 50*KX, 20*KY, SCR_WIDTH-70*KX, 100 * KY);
+        if (j.basket.isOpen) {
+            j.batch.draw(j.imgPanel, 50 * KX, 20 * KY, SCR_WIDTH - 70 * KX, 100 * KY);
             for (int i = 0; i < j.basket.artefacts.size(); i++)
-                j.batch.draw(j.basket.artefacts.get(i).img, j.basket.artefacts.get(i).x, j.basket.artefacts.get(i).y, j.basket.artefacts.get(i).width, j.basket.artefacts.get(i).height);
+                j.batch.draw(j.imgArt[j.basket.artefacts.get(i).name], j.basket.artefacts.get(i).x, j.basket.artefacts.get(i).y, j.basket.artefacts.get(i).width, j.basket.artefacts.get(i).height);
         }
         j.batch.draw(j.imgBasket, j.basket.x, j.basket.y, j.basket.width, j.basket.height); // сама корзинка
         j.batch.draw(j.imgCross, j.btnGoMenu.x, j.btnGoMenu.y, j.btnGoMenu.width, j.btnGoMenu.height); // выход в главное меню

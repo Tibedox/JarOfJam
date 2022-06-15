@@ -23,21 +23,22 @@ public class ScreenChulan implements Screen {
         imgRecipe = new Texture("recipe.jpg");
 
         // кнопка переход в дом
-        btnGoHouse = new JojButton(121 * KX, 200 * KY, 330 * KX, 600 * KY, 280*KX);
+        //btnGoHouse = new JojButton(125 * KX, 240 * KY, 186 * KX, 728 * KY, j.girl.width/2);
+        btnGoHouse = new JojButton(0, 200*KY, 100*KX, 300*KY, j.girl.width/2);
         // кнопка спотреть рецепт
         btnRecipe = new JojButton(932 * KX, 352 * KY, 110 * KX, 75 * KY, 400*KX);
 
         // создаём артефакты, которые будут на этом уровне
-        j.artefacts[HONEY] = new Artefact(HONEY, 660 * KX, 480 * KY, 120 * KX, 120 * KY, CHULAN, 1660 * KX, 625 * KY, 150 * KX, 115 * KY, HOUSE, 1660 * KX, 620 * KY, j.imgArt[HONEY], j.basket);
-        j.artefacts[EMPTYJAR] = new Artefact(EMPTYJAR, 590 * KX, 620 * KY, 68 * KX, 96 * KY, CHULAN, 1660 * KX, 625 * KY, 150 * KX, 115 * KY, HOUSE, 1660 * KX, 620 * KY, j.imgArt[EMPTYJAR], j.basket);
-        j.artefacts[POT] = new Artefact(POT, 420 * KX, 614 * KY, 162 * KX, 111 * KY, CHULAN, 145 * KX, 368 * KY, 377 * KX, 492 * KY, FORREST, 145 * KX, 300 * KY, j.imgArt[POT], j.basket);
-        j.artefacts[FRAGMENT2] = new Artefact(FRAGMENT2, 720 * KX, 618 * KY, 52 * KX, 50 * KY, CHULAN, 1660 * KX, 625 * KY, 150 * KX, 115 * KY, HOUSE, 1660 * KX, 620 * KY, j.imgArt[FRAGMENT2], j.basket);
-        j.artefacts[FRAGMENT3] = new Artefact(FRAGMENT3, 1080 * KX, 370 * KY, 81 * KX, 58 * KY, CHULAN, 1660 * KX, 625 * KY, 150 * KX, 115 * KY, HOUSE, 1660 * KX, 620 * KY, j.imgArt[FRAGMENT3], j.basket);
+        j.artefacts[HONEY] = new Artefact(HONEY, 660 * KX, 480 * KY, 120 * KX, 120 * KY, CHULAN, 1660 * KX, 625 * KY, 150 * KX, 115 * KY, HOUSE, 1660 * KX, 620 * KY, j);
+        j.artefacts[JAROGJAM] = new Artefact(JAROGJAM, 590 * KX, 620 * KY, 68 * KX, 96 * KY, CHULAN, 1660 * KX, 625 * KY, 150 * KX, 115 * KY, HOUSE, 1660 * KX, 620 * KY, j);
+        j.artefacts[POT] = new Artefact(POT, 420 * KX, 614 * KY, 162 * KX, 111 * KY, CHULAN, 1660 * KX, 625 * KY, 150 * KX, 115 * KY, HOUSE, 1660 * KX, 620 * KY, j);
+        j.artefacts[FRAGMENT2] = new Artefact(FRAGMENT2, 720 * KX, 618 * KY, 52 * KX, 50 * KY, CHULAN, 1660 * KX, 625 * KY, 150 * KX, 115 * KY, HOUSE, 1660 * KX, 620 * KY, j);
+        j.artefacts[FRAGMENT3] = new Artefact(FRAGMENT3, 1080 * KX, 370 * KY, 81 * KX, 58 * KY, CHULAN, 1660 * KX, 625 * KY, 150 * KX, 115 * KY, HOUSE, 1660 * KX, 620 * KY, j);
     }
 
     public void show() {
         current_SCREEN = CHULAN;
-        j.saveGame();
+        //j.saveGame();
     }
 
     public void render(float delta) {
@@ -66,8 +67,8 @@ public class ScreenChulan implements Screen {
             j.basket.addArtefact(j.artefacts[HONEY]);
             j.girl.artefact = null;
         }
-        if (j.artefacts[EMPTYJAR].hit(j.girl.x) && j.girl.artefact == j.artefacts[EMPTYJAR] && !j.artefacts[EMPTYJAR].inBasket) {
-            j.basket.addArtefact(j.artefacts[EMPTYJAR]);
+        if (j.artefacts[JAROGJAM].hit(j.girl.x) && j.girl.artefact == j.artefacts[JAROGJAM] && !j.artefacts[JAROGJAM].inBasket) {
+            j.basket.addArtefact(j.artefacts[JAROGJAM]);
             j.girl.artefact = null;
         }
         if (j.artefacts[POT].hit(j.girl.x) && j.girl.artefact == j.artefacts[POT] && !j.artefacts[POT].inBasket) {
@@ -108,7 +109,7 @@ public class ScreenChulan implements Screen {
         // артефакты не в корзине
         for (Artefact a : j.artefacts)
             if (a != null && !a.inBasket && a.startScreen == CHULAN)
-                j.batch.draw(a.img, a.x, a.y, a.width, a.height);
+                j.batch.draw(j.imgArt[a.name], a.x, a.y, a.width, a.height);
 
         // девочка
         j.batch.draw(j.imgGirl[j.girl.faza], j.girl.x - j.girl.width / 2, j.girl.y, j.girl.width / 2, 0, j.girl.width, j.girl.height, j.girl.goLeft ? 1 : -1, 1, 0);
@@ -117,10 +118,11 @@ public class ScreenChulan implements Screen {
         if (j.basket.isOpen) {
             j.batch.draw(j.imgPanel, 50 * KX, 20 * KY, SCR_WIDTH - 70 * KX, 100 * KY);
             for (int i = 0; i < j.basket.artefacts.size(); i++)
-                j.batch.draw(j.basket.artefacts.get(i).img, j.basket.artefacts.get(i).x, j.basket.artefacts.get(i).y, j.basket.artefacts.get(i).width, j.basket.artefacts.get(i).height);
+                j.batch.draw(j.imgArt[j.basket.artefacts.get(i).name], j.basket.artefacts.get(i).x, j.basket.artefacts.get(i).y, j.basket.artefacts.get(i).width, j.basket.artefacts.get(i).height);
         }
         j.batch.draw(j.imgBasket, j.basket.x, j.basket.y, j.basket.width, j.basket.height); // сама корзинка
         j.batch.draw(j.imgCross, j.btnGoMenu.x, j.btnGoMenu.y, j.btnGoMenu.width, j.btnGoMenu.height); // выход в главное меню
+
         if(isRecipeShow) j.batch.draw(imgRecipe, 0, 0, SCR_WIDTH, SCR_HEIGHT);
 
         j.batch.end();

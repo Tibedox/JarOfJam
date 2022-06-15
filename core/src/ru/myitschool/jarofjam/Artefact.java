@@ -5,6 +5,7 @@ import static ru.myitschool.jarofjam.JarOfJam.*;
 import com.badlogic.gdx.graphics.Texture;
 
 public class Artefact {
+    final JarOfJam j;
     float x, y, width, height; // параметры артефакта
     float fx, fy, fwidth, fheight; // параметры места, куда его надо приспособить
     float newX, newY; // координаты арта, когда его приспособили
@@ -15,13 +16,13 @@ public class Artefact {
     boolean isReleased; // использован ли артефакт
     int name;
     int startScreen, finishScreen; // на каком экране находится артефакт
-    Texture img;
-    Basket basket; // корзина нужна, чтобы посмотреть, попадает ли по размерам арт в корзину
-
+    //Texture img;
+    //Basket basket; // корзина нужна, чтобы посмотреть, попадает ли по размерам арт в корзину
 
     public Artefact(int name, float x, float y, float width, float height, int startScreen,
                     float fx, float fy, float fwidth, float fheight, int finishScreen,
-                    float newX, float newY, Texture t, Basket basket) {
+                    float newX, float newY, JarOfJam joj) {
+        j = joj;
         this.x = x;
         this.y = y;
         this.outWidth = width;
@@ -36,8 +37,6 @@ public class Artefact {
         this.name = name;
         this.startScreen = startScreen;
         this.finishScreen = finishScreen;
-        this.basket = basket;
-        img = t;
         basketWidth = 70*KX;
         basketHeight = 70*KY;
     }
@@ -50,7 +49,7 @@ public class Artefact {
         if(isMove) setXY(x, y);
 
         // меняем размеры в зависимости от того, в корзине мы, или нет
-        if(basket.isOpen && basket.hitInOpenBasket(x, y)) setCurrentWidthHeight(basketWidth, basketHeight);
+        if(j.basket.isOpen && j.basket.hitInOpenBasket(x, y)) setCurrentWidthHeight(basketWidth, basketHeight);
         else setCurrentWidthHeight(outWidth, outHeight);
     }
 

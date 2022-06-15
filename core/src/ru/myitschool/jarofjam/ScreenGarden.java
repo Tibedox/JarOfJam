@@ -1,34 +1,41 @@
 package ru.myitschool.jarofjam;
 
-import static ru.myitschool.jarofjam.JarOfJam.*;
+import static ru.myitschool.jarofjam.JarOfJam.FIELD;
+import static ru.myitschool.jarofjam.JarOfJam.GARDEN;
+import static ru.myitschool.jarofjam.JarOfJam.HOUSE;
+import static ru.myitschool.jarofjam.JarOfJam.KX;
+import static ru.myitschool.jarofjam.JarOfJam.KY;
+import static ru.myitschool.jarofjam.JarOfJam.RASPBERRY;
+import static ru.myitschool.jarofjam.JarOfJam.SCR_HEIGHT;
+import static ru.myitschool.jarofjam.JarOfJam.SCR_WIDTH;
+import static ru.myitschool.jarofjam.JarOfJam.STRAWBERRY;
+import static ru.myitschool.jarofjam.JarOfJam.current_SCREEN;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 
-public class ScreenForrest implements Screen {
+public class ScreenGarden implements Screen {
     final JarOfJam j;
-    JojButton btnGoField;
+    JojButton btnGoHouse, btnGoField;
     Texture imgBG;
 
-    ScreenForrest(JarOfJam j) {
+    ScreenGarden(JarOfJam j) {
         this.j = j;
 
-        imgBG = new Texture("screens/forrest.jpg");
+        imgBG = new Texture("screens/garden.jpg");
 
-        // кнопка переход в FIELD
-        btnGoField = new JojButton(SCR_WIDTH-j.girl.width/2, 200*KY, SCR_WIDTH-j.girl.width/2-100*KX, 300*KY, SCR_WIDTH-j.girl.width/2);
-
+        // кнопки перехода в дом и на поле
+        btnGoHouse = new JojButton(SCR_WIDTH-j.girl.width/2, 200*KY, SCR_WIDTH-j.girl.width/2-100*KX, 300*KY, SCR_WIDTH-j.girl.width/2);
+        btnGoField = new JojButton(0, 200*KY, 100*KX, 300*KY, j.girl.width/2);
 
         // создаём артефакты, которые будут на этом уровне
-  /*  j.artefacts[STRAWBERRY] = new Artefact(STRAWBERRY, 863*KX, 183*KY, 150*KX, 150*KY, FIELD,
-            1660*KX, 625*KY, 150*KX, 115*KY, HOUSE, 1660*KX, 600*KY, j.imgStrawberry, j.basket);*/
+        j.artefacts[STRAWBERRY] = new Artefact(STRAWBERRY, 887*KX, 400*KY, 85*KX, 89*KY, GARDEN, 1660*KX, 625*KY, 150*KX, 115*KY, HOUSE, -1660*KX, 0*KY, j);
     }
 
     @Override
     public void show() {
-        current_SCREEN = FORREST;
-        //j.saveGame();
+        current_SCREEN = GARDEN;
     }
 
     @Override
@@ -38,27 +45,28 @@ public class ScreenForrest implements Screen {
             j.touch.set((float)Gdx.input.getX(), (float)Gdx.input.getY(), 0);
             j.camera.unproject(j.touch);
 
-            if (btnGoField.hit(j.touch.x, j.touch.y)) {
-                j.girl.goToPlace(btnGoField.girlWannaPlaceX);
-            }
-
+            if (btnGoHouse.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnGoHouse.girlWannaPlaceX);
+            if (btnGoField.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnGoField.girlWannaPlaceX);
         }
 
         // игровые события
         j.girl.move();
-        // идём на экран HOME
-        if(j.girl.wannaPlaceX == btnGoField.girlWannaPlaceX && j.girl.x == j.girl.wannaPlaceX) {
+        // идём на экран HOUSE
+        if(j.girl.wannaPlaceX == btnGoHouse.girlWannaPlaceX && j.girl.x == j.girl.wannaPlaceX) {
             j.girl.came(j.girl.width/2);
+            j.setScreen(j.screenHouse);
+        }
+        // идём на экран FIELD
+        if(j.girl.wannaPlaceX == btnGoField.girlWannaPlaceX && j.girl.x == j.girl.wannaPlaceX) {
+            j.girl.came(SCR_WIDTH-j.girl.width/2);
             j.setScreen(j.screenField);
         }
 
-        // если девочка дошла до места, куда положить артефакт, то он пропадает из корзины
-        if(j.artefacts[ROPE].hitFinish(j.girl.x) && j.girl.artefact == j.artefacts[ROPE] && j.artefacts[ROPE].inBasket) {
-            quest_ROPE = true;
-            j.basket.removeArtefact(j.artefacts[ROPE]);
+        // если девочка дошла до артефакта, то он попадает в корзину
+        if(j.artefacts[STRAWBERRY].hit(j.girl.x) && j.girl.artefact == j.artefacts[STRAWBERRY] && !j.artefacts[STRAWBERRY].inBasket) {
+            j.basket.addArtefact(j.artefacts[STRAWBERRY]);
             j.girl.artefact = null;
         }
-
 
         // отрисовка
         j.camera.update();
@@ -68,7 +76,7 @@ public class ScreenForrest implements Screen {
 
         // артефакты не в корзине
         for (Artefact a : j.artefacts)
-            if (a != null && !a.inBasket && a.startScreen == FORREST)
+            if (a != null && !a.inBasket && a.startScreen == current_SCREEN)
                 j.batch.draw(j.imgArt[a.name], a.x, a.y, a.width, a.height);
 
         // девочка

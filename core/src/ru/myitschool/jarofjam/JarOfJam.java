@@ -12,8 +12,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector3;
 
-import java.io.File;
-
 public class JarOfJam extends Game {
     public static final int SCR_WIDTH = 1920;
     public static final int SCR_HEIGHT = 1080;
@@ -23,13 +21,13 @@ public class JarOfJam extends Game {
     // артефакты
     public static final int HONEY = 0, TREE1 = 1, TREE2 = 2, TREE3 = 3, TREE4 = 4,TREE5 = 5, ROPE = 6;
     public static final int KEY = 7, JUGWATER = 8, SUGAR = 9, FRAGMENT1 = 10, FRAGMENT2 = 11, FRAGMENT3 = 12, FRAGMENT4 = 13;
-    public static final int EMPTYJAR = 14, POT = 15;
-    public static final int N_ARTEFACTS = 16;
+    public static final int JAROGJAM = 14, POT = 15, MATCHES = 16, STRAWBERRY = 17, RASPBERRY = 18;
+    public static final int N_ARTEFACTS = 19;
     // экраны
-    public static final int MENU = 0, HOUSE = 1, FIELD = 2, FORREST = 3, SWAMP = 4, CHULAN = 5, INTRO = 6;
-    public static int current_SCREEN, previous_SCREEN = CHULAN; // активный экран
+    public static final int MENU = 0, HOUSE = 1, FIELD = 2, FORREST = 3, SWAMP = 4, CHULAN = 5, INTRO = 6, GARDEN = 7;
+    public static int current_SCREEN, previous_SCREEN = HOUSE; // активный экран
     // задания
-    public static boolean quest_KEY, quest_ROPE, quest_HONEY;
+    public static boolean quest_JAM, quest_ROPE, quest_HONEY;
 
     SpriteBatch batch;
     OrthographicCamera camera;
@@ -42,6 +40,7 @@ public class JarOfJam extends Game {
     ScreenIntro screenIntro;
     ScreenChulan screenChulan;
     ScreenHouse screenHouse;
+    ScreenGarden screenGarden;
     ScreenField screenField;
     ScreenForrest screenForrest;
     ScreenSwamp screenSwamp;
@@ -64,33 +63,23 @@ public class JarOfJam extends Game {
         this.camera.setToOrtho(false, SCR_WIDTH, SCR_HEIGHT);
         this.touch = new Vector3();
 
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("text.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.characters = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяabcdefghijklmnopqrstuvwxyzАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789][_!$%#@|\\/?-+=()*&.;:,{}\"´`'<>";
-        parameter.size = (int)(100*KX);
-        parameter.color = Color.DARK_GRAY;
-        parameter.borderColor = Color.CORAL;
-        parameter.borderWidth = 2;
-        fontMenu = generator.generateFont(parameter);
-        parameter.size = (int)(50*KX);
-        parameter.borderWidth = 4;
-        parameter.color = Color.WHITE;
-        parameter.borderColor = Color.DARK_GRAY;
-        fontGame = generator.generateFont(parameter);
-        generator.dispose();
+        generateFonts();
 
         imgBasket = new Texture("basket.png");
-        imgCross = new Texture("menu.png");
+        imgCross = new Texture("sun.png");
 
         // картинки артефактов
         imgArt[HONEY] = new Texture("artefacts/honey.png");
         for (int i = TREE1, j=1; i <= TREE5; i++, j++) imgArt[i] = new Texture("artefacts/tree"+j+".png");
         imgArt[ROPE] = new Texture("artefacts/rope.png");
         imgArt[KEY] = new Texture("artefacts/key.png");
+        imgArt[MATCHES] = new Texture("artefacts/matches.png");
         imgArt[JUGWATER] = new Texture("artefacts/jugwater.png");
+        imgArt[STRAWBERRY] = new Texture("artefacts/strawberry.png");
+        imgArt[RASPBERRY] = new Texture("artefacts/raspberry.png");
         imgArt[SUGAR] = new Texture("artefacts/sugar.png");
         for (int i = FRAGMENT1, j=1; i <= FRAGMENT4; i++, j++) imgArt[i] = new Texture("artefacts/fragment"+j+".png");
-        imgArt[EMPTYJAR] = new Texture("artefacts/emptyjar.png");
+        imgArt[JAROGJAM] = new Texture("artefacts/emptyjar.png");
         imgArt[POT] = new Texture("artefacts/pot.png");
 
         imgPanel = new Texture("inventory.png");
@@ -107,6 +96,7 @@ public class JarOfJam extends Game {
         this.screenIntro = new ScreenIntro(this);
         this.screenChulan = new ScreenChulan(this);
         this.screenHouse = new ScreenHouse(this);
+        this.screenGarden = new ScreenGarden(this);
         this.screenField = new ScreenField(this);
         this.screenForrest = new ScreenForrest(this);
         this.screenSwamp = new ScreenSwamp(this);
@@ -114,11 +104,36 @@ public class JarOfJam extends Game {
         this.setScreen(this.screenMenu);
     }
 
+    void generateFonts(){
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/text.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.characters = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяabcdefghijklmnopqrstuvwxyzАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789][_!$%#@|\\/?-+=()*&.;:,{}\"´`'<>";
+        parameter.size = (int)(100*KX);
+        parameter.color = Color.DARK_GRAY;
+        parameter.borderColor = Color.CORAL;
+        parameter.borderWidth = 2;
+        fontMenu = generator.generateFont(parameter);
+
+        generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/ubuntu.ttf"));
+        parameter.size = (int)(50*KX);
+        parameter.borderWidth = 4;
+        parameter.color = Color.WHITE;
+        parameter.borderColor = Color.DARK_GRAY;
+        fontIntro = generator.generateFont(parameter);
+
+        parameter.size = (int)(40*KX);
+        parameter.borderWidth = 2;
+        parameter.color = Color.CHARTREUSE;
+        parameter.borderColor = Color.DARK_GRAY;
+        fontGame = generator.generateFont(parameter);
+        generator.dispose();
+    }
+
     void saveGame(){
         Preferences prefs = Gdx.app.getPreferences("jar_of_jam_preferences"); // заводим preferences
         prefs.putInteger("current_SCREEN", current_SCREEN); // сохраняем число по ключу
         prefs.putInteger("previous_SCREEN", previous_SCREEN);
-        prefs.putBoolean("quest_KEY", quest_KEY);
+        prefs.putBoolean("quest_JAM", quest_JAM);
         prefs.putBoolean("quest_ROPE", quest_ROPE);
         prefs.putBoolean("quest_HONEY", quest_HONEY);
         prefs.putFloat("girl.x", girl.x);
@@ -141,7 +156,7 @@ public class JarOfJam extends Game {
         Preferences prefs = Gdx.app.getPreferences("jar_of_jam_preferences"); // заводим preferences
         if(prefs.contains("current_SCREEN")) current_SCREEN = prefs.getInteger("current_SCREEN", current_SCREEN);
         if(prefs.contains("previous_SCREEN")) previous_SCREEN = prefs.getInteger("previous_SCREEN", previous_SCREEN);
-        if(prefs.contains("quest_KEY")) quest_KEY = prefs.getBoolean("quest_KEY", quest_KEY);
+        if(prefs.contains("quest_JAM")) quest_JAM = prefs.getBoolean("quest_KEY", quest_JAM);
         if(prefs.contains("quest_ROPE")) quest_ROPE = prefs.getBoolean("quest_ROPE", quest_ROPE);
         if(prefs.contains("quest_HONEY")) quest_HONEY = prefs.getBoolean("quest_HONEY", quest_HONEY);
         if(prefs.contains("girl.x")) girl.x = prefs.getFloat("girl.x", girl.x);
@@ -165,6 +180,6 @@ public class JarOfJam extends Game {
 
     public void dispose() {
         super.dispose();
-        this.batch.dispose();
+        batch.dispose();
     }
 }
