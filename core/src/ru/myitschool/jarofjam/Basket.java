@@ -38,8 +38,8 @@ public class Basket {
     void setArtefactsXY(){
         for(int i=0; i<artefacts.size(); i++) {
             artefacts.get(i).goToBasket();
-            artefacts.get(i).x = 200 * KX + i * (artefacts.get(i).basketWidth+10*KX);
-            artefacts.get(i).y = 35 * KY;
+            artefacts.get(i).x = 190 * KX + i * (artefacts.get(i).basketWidth+5*KX);
+            artefacts.get(i).y = 40 * KY;
         }
     }
 

@@ -105,12 +105,12 @@ public class ScreenHouse implements Screen {
         j.girl.move();
         // идём на экран Garden
         if(j.girl.wannaPlaceX == btnGoGarden.girlWannaPlaceX && j.girl.x == j.girl.wannaPlaceX) {
-            j.girl.came(SCR_WIDTH-j.girl.width/2);
+            j.girl.setX(SCR_WIDTH-j.girl.width/2);
             j.setScreen(j.screenGarden);
         }
         // идём на экран CHULAN
         if(j.girl.wannaPlaceX == btnGoChulan.girlWannaPlaceX && j.girl.x == j.girl.wannaPlaceX) {
-            j.girl.came(j.girl.width/2);
+            j.girl.setX(j.girl.width/2);
             j.setScreen(j.screenChulan);
         }
         // если девочка дошла до артефакта, то он попадает в корзину
@@ -149,11 +149,11 @@ public class ScreenHouse implements Screen {
             j.girl.artefact = null;
         }
         if(j.artefacts[POT].isReleased && j.artefacts[SUGAR].isReleased && j.artefacts[JUGWATER].isReleased
-                && j.artefacts[STRAWBERRY].isReleased && j.artefacts[RASPBERRY].isReleased && j.artefacts[JAROGJAM].inBasket) {
+                && j.artefacts[STRAWBERRY].isReleased && j.artefacts[RASPBERRY].isReleased && j.artefacts[JAROFJAM].inBasket) {
             if (j.artefacts[MATCHES].hitFinish(j.girl.x) && j.girl.artefact == j.artefacts[MATCHES] && j.artefacts[MATCHES].inBasket) {
                 j.basket.removeArtefact(j.artefacts[MATCHES]);
                 j.girl.artefact = null;
-                j.imgArt[JAROGJAM] = new Texture("artefacts/jarofjam.png");
+                j.imgArt[JAROFJAM] = new Texture("artefacts/jarofjam.png");
                 quest_JAM = true;
             }
         }
@@ -175,11 +175,7 @@ public class ScreenHouse implements Screen {
                 j.girl.artefact = null;
             }
         }
-        if(j.artefacts[HONEY].hitFinish(j.girl.x) && j.girl.artefact == j.artefacts[HONEY] && j.artefacts[HONEY].inBasket) {
-            quest_HONEY = true;
-            j.basket.removeArtefact(j.artefacts[HONEY]);
-            j.girl.artefact = null;
-        }
+
        /* if(j.artefacts[STRAWBERRY].hitFinish(j.girl.x) && j.girl.artefact == j.artefacts[STRAWBERRY] && j.artefacts[STRAWBERRY].inBasket) {
             QUEST_STRAWBERRY = true;
             j.basket.removeArtefact(j.artefacts[STRAWBERRY]);
@@ -200,7 +196,7 @@ public class ScreenHouse implements Screen {
 
         // артефакты не в корзине
         for(Artefact a: j.artefacts)
-            if(a != null && !a.inBasket && a.startScreen == current_SCREEN)
+            if (a != null && !a.inBasket && (a.startScreen == current_SCREEN && !a.isReleased || a.finishScreen == current_SCREEN && a.isReleased))
                 j.batch.draw(j.imgArt[a.name], a.x, a.y, a.width, a.height);
 
         // девочка

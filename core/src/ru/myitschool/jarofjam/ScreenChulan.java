@@ -23,14 +23,14 @@ public class ScreenChulan implements Screen {
         imgRecipe = new Texture("recipe.jpg");
 
         // кнопка переход в дом
-        //btnGoHouse = new JojButton(125 * KX, 240 * KY, 186 * KX, 728 * KY, j.girl.width/2);
-        btnGoHouse = new JojButton(0, 200*KY, 100*KX, 300*KY, j.girl.width/2);
+        btnGoHouse = new JojButton(125 * KX, 240 * KY, 186 * KX, 728 * KY, j.girl.width/2);
+        //btnGoHouse = new JojButton(0, 200*KY, 100*KX, 300*KY, j.girl.width/2);
         // кнопка спотреть рецепт
         btnRecipe = new JojButton(932 * KX, 432 * KY, 110 * KX, 75 * KY, 400*KX);
 
         // создаём артефакты, которые будут на этом уровне
-        j.artefacts[HONEY] = new Artefact(HONEY, 660 * KX, 560 * KY, 120 * KX, 120 * KY, CHULAN, 1660 * KX, 625 * KY, 150 * KX, 115 * KY, HOUSE, 1660 * KX, 620 * KY, j);
-        j.artefacts[JAROGJAM] = new Artefact(JAROGJAM, 590 * KX, 700 * KY, 68 * KX, 96 * KY, CHULAN, 1660 * KX, 625 * KY, 150 * KX, 115 * KY, HOUSE, 1660 * KX, 620 * KY, j);
+        j.artefacts[HONEY] = new Artefact(HONEY, 660 * KX, 560 * KY, 120 * KX, 120 * KY, CHULAN, 428 * KX, 230 * KY, 470 * KX, 310 * KY, FORREST, -1660 * KX, 620 * KY, j);
+        j.artefacts[JAROFJAM] = new Artefact(JAROFJAM, 590 * KX, 700 * KY, 68 * KX, 96 * KY, CHULAN, 1660 * KX, 625 * KY, 150 * KX, 115 * KY, HOUSE, 1660 * KX, 620 * KY, j);
         j.artefacts[POT] = new Artefact(POT, 420 * KX, 694 * KY, 162 * KX, 111 * KY, CHULAN, 1660 * KX, 625 * KY, 150 * KX, 115 * KY, HOUSE, 1660 * KX, 620 * KY, j);
         j.artefacts[FRAGMENT2] = new Artefact(FRAGMENT2, 720 * KX, 698 * KY, 52 * KX, 50 * KY, CHULAN, 255 * KX, 315 * KY, 150 * KX, 145 * KY, FORREST, 350 * KX, 427 * KY, j);
         j.artefacts[FRAGMENT3] = new Artefact(FRAGMENT3, 1080 * KX, 450 * KY, 81 * KX, 58 * KY, CHULAN, 255 * KX, 315 * KY, 150 * KX, 145 * KY, FORREST, 280 * KX, 415 * KY, j);
@@ -57,8 +57,8 @@ public class ScreenChulan implements Screen {
         // игровые события
         j.girl.move();
         // идём на экран HOUSE
-        if (j.girl.wannaPlaceX == btnGoHouse.girlWannaPlaceX && j.girl.x == j.girl.wannaPlaceX) {
-            j.girl.came(SCR_WIDTH - j.girl.width / 2);
+        if (j.girl.wannaPlaceX == btnGoHouse.girlWannaPlaceX && j.girl.came(j.girl.wannaPlaceX)) {
+            j.girl.setX(SCR_WIDTH - j.girl.width / 2);
             j.setScreen(j.screenHouse);
         }
 
@@ -67,8 +67,8 @@ public class ScreenChulan implements Screen {
             j.basket.addArtefact(j.artefacts[HONEY]);
             j.girl.artefact = null;
         }
-        if (j.artefacts[JAROGJAM].hit(j.girl.x) && j.girl.artefact == j.artefacts[JAROGJAM] && !j.artefacts[JAROGJAM].inBasket) {
-            j.basket.addArtefact(j.artefacts[JAROGJAM]);
+        if (j.artefacts[JAROFJAM].hit(j.girl.x) && j.girl.artefact == j.artefacts[JAROFJAM] && !j.artefacts[JAROFJAM].inBasket) {
+            j.basket.addArtefact(j.artefacts[JAROFJAM]);
             j.girl.artefact = null;
         }
         if (j.artefacts[POT].hit(j.girl.x) && j.girl.artefact == j.artefacts[POT] && !j.artefacts[POT].inBasket) {
@@ -84,20 +84,7 @@ public class ScreenChulan implements Screen {
             j.girl.artefact = null;
         }
         // если девочка дошла до места, куда положить артефакт, то он пропадает из корзины
-        /*if(j.artefacts[SUGAR].hitFinish(j.girl.x) && j.girl.artefact == j.artefacts[SUGAR] && j.artefacts[SUGAR].inBasket) {
-            j.basket.removeArtefact(j.artefacts[SUGAR]);
-            j.girl.artefact = null;
-        }
-        if(j.artefacts[HONEY].hitFinish(j.girl.x) && j.girl.artefact == j.artefacts[HONEY] && j.artefacts[HONEY].inBasket) {
-            quest_HONEY = true;
-            j.basket.removeArtefact(j.artefacts[HONEY]);
-            j.girl.artefact = null;
-        }*/
-       /* if(j.artefacts[STRAWBERRY].hitFinish(j.girl.x) && j.girl.artefact == j.artefacts[STRAWBERRY] && j.artefacts[STRAWBERRY].inBasket) {
-            QUEST_STRAWBERRY = true;
-            j.basket.removeArtefact(j.artefacts[STRAWBERRY]);
-            j.girl.artefact = null;
-        }*/
+
 
         //********************* отрисовка ************************************
         j.camera.update();
@@ -108,7 +95,7 @@ public class ScreenChulan implements Screen {
 
         // артефакты не в корзине
         for (Artefact a : j.artefacts)
-            if (a != null && !a.inBasket && a.startScreen == CHULAN)
+            if (a != null && !a.inBasket && (a.startScreen == current_SCREEN && !a.isReleased || a.finishScreen == current_SCREEN && a.isReleased))
                 j.batch.draw(j.imgArt[a.name], a.x, a.y, a.width, a.height);
 
         // девочка

@@ -37,8 +37,8 @@ public class Artefact {
         this.name = name;
         this.startScreen = startScreen;
         this.finishScreen = finishScreen;
-        basketWidth = 70*KX;
-        basketHeight = 70*KY;
+        basketWidth = 60*KX;
+        basketHeight = 60*KY;
     }
 
     void drag(float x, float y){

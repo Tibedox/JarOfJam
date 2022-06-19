@@ -1,11 +1,9 @@
 package ru.myitschool.jarofjam;
 
-import static ru.myitschool.jarofjam.JarOfJam.FIELD;
 import static ru.myitschool.jarofjam.JarOfJam.GARDEN;
 import static ru.myitschool.jarofjam.JarOfJam.HOUSE;
 import static ru.myitschool.jarofjam.JarOfJam.KX;
 import static ru.myitschool.jarofjam.JarOfJam.KY;
-import static ru.myitschool.jarofjam.JarOfJam.RASPBERRY;
 import static ru.myitschool.jarofjam.JarOfJam.SCR_HEIGHT;
 import static ru.myitschool.jarofjam.JarOfJam.SCR_WIDTH;
 import static ru.myitschool.jarofjam.JarOfJam.STRAWBERRY;
@@ -53,12 +51,12 @@ public class ScreenGarden implements Screen {
         j.girl.move();
         // идём на экран HOUSE
         if(j.girl.wannaPlaceX == btnGoHouse.girlWannaPlaceX && j.girl.x == j.girl.wannaPlaceX) {
-            j.girl.came(j.girl.width/2);
+            j.girl.setX(j.girl.width/2);
             j.setScreen(j.screenHouse);
         }
         // идём на экран FIELD
         if(j.girl.wannaPlaceX == btnGoField.girlWannaPlaceX && j.girl.x == j.girl.wannaPlaceX) {
-            j.girl.came(SCR_WIDTH-j.girl.width/2);
+            j.girl.setX(SCR_WIDTH-j.girl.width/2);
             j.setScreen(j.screenField);
         }
 
@@ -76,7 +74,7 @@ public class ScreenGarden implements Screen {
 
         // артефакты не в корзине
         for (Artefact a : j.artefacts)
-            if (a != null && !a.inBasket && a.startScreen == current_SCREEN)
+            if (a != null && !a.inBasket && (a.startScreen == current_SCREEN && !a.isReleased || a.finishScreen == current_SCREEN && a.isReleased))
                 j.batch.draw(j.imgArt[a.name], a.x, a.y, a.width, a.height);
 
         // девочка

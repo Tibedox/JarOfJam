@@ -43,10 +43,14 @@ public class Girl {
         targetX = x;
     }
 
-    void came(float x){
+    void setX(float x){
         this.x = x;
         setTarget(x);
         wannaPlaceX = 0;
+    }
+
+    boolean came(float x){
+        return this.x>x-width/2 && this.x<x+width/2;
     }
 
     void move() {

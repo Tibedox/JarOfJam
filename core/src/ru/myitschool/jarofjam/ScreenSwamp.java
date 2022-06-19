@@ -8,7 +8,8 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class ScreenSwamp implements Screen {
     final JarOfJam j;
-    JojButton btnGoField;
+    //JojButton btnGoForrestL, btnGoForrestR;
+    JojButton btnGoForrest;
     Texture imgBG;
 
     ScreenSwamp(JarOfJam j) {
@@ -16,8 +17,10 @@ public class ScreenSwamp implements Screen {
 
         imgBG = new Texture("screens/swamp.jpg");
 
-        // кнопка переход в FIELD
-        btnGoField = new JojButton(SCR_WIDTH-j.girl.width/2, 200*KY, SCR_WIDTH-j.girl.width/2-100*KX, 300*KY, SCR_WIDTH-j.girl.width/2);
+        // кнопки переход в лес
+        //btnGoForrestR = new JojButton(SCR_WIDTH-j.girl.width/2, 200*KY, SCR_WIDTH-j.girl.width/2-100*KX, 300*KY, SCR_WIDTH-j.girl.width/2);
+        //btnGoForrestL = new JojButton(0, 200*KY, 100*KX, 300*KY, j.girl.width/2);
+        btnGoForrest = new JojButton(600*KX, 5*KY, 420*KX, 150*KY, 810*KX);
 
 
         // создаём артефакты, которые будут на этом уровне
@@ -37,18 +40,22 @@ public class ScreenSwamp implements Screen {
             j.touch.set((float)Gdx.input.getX(), (float)Gdx.input.getY(), 0);
             j.camera.unproject(j.touch);
 
-            if (btnGoField.hit(j.touch.x, j.touch.y)) {
-                j.girl.goToPlace(btnGoField.girlWannaPlaceX);
-            }
-
+            //if (btnGoForrestL.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnGoForrestL.girlWannaPlaceX);
+            //if (btnGoForrestR.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnGoForrestR.girlWannaPlaceX);
+            if (btnGoForrest.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnGoForrest.girlWannaPlaceX);
         }
 
         // игровые события
         j.girl.move();
-        // идём на экран HOME
-        if(j.girl.wannaPlaceX == btnGoField.girlWannaPlaceX && j.girl.x == j.girl.wannaPlaceX) {
-            j.girl.came(j.girl.width/2);
-            j.setScreen(j.screenField);
+        // идём на экран FORREST
+        /*if(j.girl.wannaPlaceX == btnGoForrestL.girlWannaPlaceX && j.girl.x == j.girl.wannaPlaceX ||
+                j.girl.wannaPlaceX == btnGoForrestR.girlWannaPlaceX && j.girl.x == j.girl.wannaPlaceX) {
+            j.girl.setX(SCR_WIDTH/2);
+            j.setScreen(j.screenForrest);
+        }*/
+        if(j.girl.wannaPlaceX == btnGoForrest.girlWannaPlaceX && j.girl.came(j.girl.wannaPlaceX)) {
+            j.girl.setX(SCR_WIDTH/2);
+            j.setScreen(j.screenForrest);
         }
 
         // если девочка дошла до артефакта, то он попадает в корзину
@@ -65,7 +72,7 @@ public class ScreenSwamp implements Screen {
 
         // артефакты не в корзине
         for (Artefact a : j.artefacts)
-            if (a != null && !a.inBasket && a.startScreen == SWAMP)
+            if (a != null && !a.inBasket && (a.startScreen == current_SCREEN && !a.isReleased || a.finishScreen == current_SCREEN && a.isReleased))
                 j.batch.draw(j.imgArt[a.name], a.x, a.y, a.width, a.height);
 
         // девочка

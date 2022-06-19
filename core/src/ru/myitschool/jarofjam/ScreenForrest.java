@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class ScreenForrest implements Screen {
     final JarOfJam j;
-    JojButton btnGoField;
+    JojButton btnGoField, btnRemoveStone, btnGoSwamp;
     Texture imgBG;
     Texture imgRock, imgBear;
 
@@ -21,7 +21,8 @@ public class ScreenForrest implements Screen {
 
         // кнопка переход в FIELD
         btnGoField = new JojButton(SCR_WIDTH-j.girl.width/2, 200*KY, SCR_WIDTH-j.girl.width/2-100*KX, 300*KY, SCR_WIDTH-j.girl.width/2);
-
+        btnRemoveStone = new JojButton(255 * KX, 315 * KY, 150 * KX, 145 * KY, 255 * KX);
+        btnGoSwamp = new JojButton(160 * KX, 270 * KY, 280 * KX, 400 * KY, 200*KX);
 
         // создаём артефакты, которые будут на этом уровне
   /*  j.artefacts[STRAWBERRY] = new Artefact(STRAWBERRY, 863*KX, 183*KY, 150*KX, 150*KY, FIELD,
@@ -31,7 +32,6 @@ public class ScreenForrest implements Screen {
     @Override
     public void show() {
         current_SCREEN = FORREST;
-        //j.saveGame();
     }
 
     @Override
@@ -41,40 +41,60 @@ public class ScreenForrest implements Screen {
             j.touch.set((float)Gdx.input.getX(), (float)Gdx.input.getY(), 0);
             j.camera.unproject(j.touch);
 
-            if (btnGoField.hit(j.touch.x, j.touch.y)) {
-                j.girl.goToPlace(btnGoField.girlWannaPlaceX);
+            if (btnGoField.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnGoField.girlWannaPlaceX);
+            if(quest_STONE) if (btnGoSwamp.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnGoSwamp.girlWannaPlaceX);
+            if (quest_FRAGMENT && btnRemoveStone.hit(j.touch.x, j.touch.y)) {
+                quest_STONE = true;
+                for (int i = FRAGMENT1; i <= FRAGMENT4; i++) j.artefacts[i].x = -2000;
             }
-
         }
 
         // игровые события
         j.girl.move();
         // идём на экран HOME
         if(j.girl.wannaPlaceX == btnGoField.girlWannaPlaceX && j.girl.x == j.girl.wannaPlaceX) {
-            j.girl.came(j.girl.width/2);
+            j.girl.setX(j.girl.width/2);
             j.setScreen(j.screenField);
         }
-
-        // если девочка дошла до места, куда положить артефакт, то он пропадает из корзины
-        for (int i = FRAGMENT1; i <= FRAGMENT4; i++) {
-            if (j.artefacts[i].hitFinish(j.girl.x) && j.girl.artefact == j.artefacts[i] && j.artefacts[i].inBasket) {
-                j.basket.removeArtefact(j.artefacts[i]);
-                j.girl.artefact = null;
+        // идём на экран SWAMP
+        if(quest_STONE) {
+            if (j.girl.wannaPlaceX == btnGoSwamp.girlWannaPlaceX && j.girl.came(j.girl.wannaPlaceX)) {
+                j.girl.x = SCR_WIDTH / 2;
+                j.girl.goToPlace(SCR_WIDTH / 2);
+                j.setScreen(j.screenSwamp);
             }
         }
 
+        // если девочка дошла до места, куда положить артефакт, то он пропадает из корзины
+        if(j.artefacts[HONEY].isReleased) {
+            for (int i = FRAGMENT1; i <= FRAGMENT4; i++) {
+                if (j.artefacts[i].hitFinish(j.girl.x) && j.girl.artefact == j.artefacts[i] && j.artefacts[i].inBasket) {
+                    j.basket.removeArtefact(j.artefacts[i]);
+                    j.girl.artefact = null;
+                    quest_FRAGMENT = true;
+                    for (int k = FRAGMENT1; k <= FRAGMENT4; k++)
+                        if(!j.artefacts[k].isReleased) quest_FRAGMENT = false;
+
+                }
+            }
+        }
+
+        if(j.artefacts[HONEY].hitFinish(j.girl.x) && j.girl.artefact == j.artefacts[HONEY] && j.artefacts[HONEY].inBasket) {
+            j.basket.removeArtefact(j.artefacts[HONEY]);
+            j.girl.artefact = null;
+        }
         // отрисовка
         j.camera.update();
         j.batch.setProjectionMatrix(j.camera.combined);
         j.batch.begin();
         j.batch.draw(imgBG, 0, 0, SCR_WIDTH, SCR_HEIGHT);
 
-        j.batch.draw(imgRock, 200*KX, 232*KY, 253*KX, 341*KY);
-        j.batch.draw(imgBear, 400*KX, 180*KY, 522*KX, 384*KY);
+        if(!quest_STONE) j.batch.draw(imgRock, 200*KX, 232*KY, 253*KX, 341*KY);
+        if(!j.artefacts[HONEY].isReleased) j.batch.draw(imgBear, 400*KX, 180*KY, 522*KX, 384*KY);
 
         // артефакты не в корзине
         for (Artefact a : j.artefacts)
-            if (a != null && !a.inBasket && a.startScreen == current_SCREEN)
+            if (a != null && !a.inBasket && (a.startScreen == current_SCREEN && !a.isReleased || a.finishScreen == current_SCREEN && a.isReleased))
                 j.batch.draw(j.imgArt[a.name], a.x, a.y, a.width, a.height);
 
         // девочка

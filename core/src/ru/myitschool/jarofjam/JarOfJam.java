@@ -21,13 +21,13 @@ public class JarOfJam extends Game {
     // артефакты
     public static final int HONEY = 0, TREE1 = 1, TREE2 = 2, TREE3 = 3, TREE4 = 4,TREE5 = 5, ROPE = 6;
     public static final int KEY = 7, JUGWATER = 8, SUGAR = 9, FRAGMENT1 = 10, FRAGMENT2 = 11, FRAGMENT3 = 12, FRAGMENT4 = 13;
-    public static final int JAROGJAM = 14, POT = 15, MATCHES = 16, STRAWBERRY = 17, RASPBERRY = 18;
+    public static final int JAROFJAM = 14, POT = 15, MATCHES = 16, STRAWBERRY = 17, RASPBERRY = 18;
     public static final int N_ARTEFACTS = 19;
     // экраны
     public static final int MENU = 0, HOUSE = 1, FIELD = 2, FORREST = 3, SWAMP = 4, CHULAN = 5, INTRO = 6, GARDEN = 7;
     public static int current_SCREEN, previous_SCREEN = HOUSE; // активный экран
     // задания
-    public static boolean quest_JAM, quest_ROPE, quest_HONEY;
+    public static boolean quest_JAM, quest_ROPE, quest_FRAGMENT, quest_STONE;
 
     SpriteBatch batch;
     OrthographicCamera camera;
@@ -79,7 +79,7 @@ public class JarOfJam extends Game {
         imgArt[RASPBERRY] = new Texture("artefacts/raspberry.png");
         imgArt[SUGAR] = new Texture("artefacts/sugar.png");
         for (int i = FRAGMENT1, j=1; i <= FRAGMENT4; i++, j++) imgArt[i] = new Texture("artefacts/fragment"+j+".png");
-        imgArt[JAROGJAM] = new Texture("artefacts/emptyjar.png");
+        imgArt[JAROFJAM] = new Texture("artefacts/emptyjar.png");
         imgArt[POT] = new Texture("artefacts/pot.png");
 
         imgPanel = new Texture("inventory.png");
@@ -135,7 +135,8 @@ public class JarOfJam extends Game {
         prefs.putInteger("previous_SCREEN", previous_SCREEN);
         prefs.putBoolean("quest_JAM", quest_JAM);
         prefs.putBoolean("quest_ROPE", quest_ROPE);
-        prefs.putBoolean("quest_HONEY", quest_HONEY);
+        prefs.putBoolean("quest_FRAGMENT", quest_FRAGMENT);
+        prefs.putBoolean("quest_STONE", quest_STONE);
         prefs.putFloat("girl.x", girl.x);
         prefs.putFloat("girl.y", girl.y);
         for (int i = 0; i < artefacts.length; i++) {
@@ -158,7 +159,8 @@ public class JarOfJam extends Game {
         if(prefs.contains("previous_SCREEN")) previous_SCREEN = prefs.getInteger("previous_SCREEN", previous_SCREEN);
         if(prefs.contains("quest_JAM")) quest_JAM = prefs.getBoolean("quest_KEY", quest_JAM);
         if(prefs.contains("quest_ROPE")) quest_ROPE = prefs.getBoolean("quest_ROPE", quest_ROPE);
-        if(prefs.contains("quest_HONEY")) quest_HONEY = prefs.getBoolean("quest_HONEY", quest_HONEY);
+        if(prefs.contains("quest_FRAGMENT")) quest_FRAGMENT = prefs.getBoolean("quest_FRAGMENT", quest_FRAGMENT);
+        if(prefs.contains("quest_STONE")) quest_STONE = prefs.getBoolean("quest_STONE", quest_STONE);
         if(prefs.contains("girl.x")) girl.x = prefs.getFloat("girl.x", girl.x);
         if(prefs.contains("girl.y")) girl.y = prefs.getFloat("girl.y", girl.y);
 

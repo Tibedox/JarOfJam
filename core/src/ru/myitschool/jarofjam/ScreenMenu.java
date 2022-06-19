@@ -77,6 +77,7 @@ public class ScreenMenu implements Screen {
             case GARDEN: return j.screenGarden;
             case FIELD: return j.screenField;
             case FORREST: return j.screenForrest;
+            case SWAMP: return j.screenSwamp;
             default: return j.screenMenu;
         }
     }

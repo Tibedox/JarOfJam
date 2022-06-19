@@ -9,12 +9,13 @@ import com.badlogic.gdx.graphics.Texture;
 public class ScreenField implements Screen {
     final JarOfJam j;
     JojButton btnGoGarden, btnGoForrest;
-    Texture imgBG;
+    Texture imgBG, imgBush;
 
     ScreenField(JarOfJam j) {
         this.j = j;
 
         imgBG = new Texture("screens/field.jpg");
+        imgBush = new Texture("bush.png");
 
         // кнопка переход в сад и в лес
         btnGoGarden = new JojButton(SCR_WIDTH-j.girl.width/2, 200*KY, SCR_WIDTH-j.girl.width/2-100*KX, 300*KY, SCR_WIDTH-j.girl.width/2);
@@ -44,12 +45,12 @@ public class ScreenField implements Screen {
         j.girl.move();
         // идём на экран HOME
         if(j.girl.wannaPlaceX == btnGoGarden.girlWannaPlaceX && j.girl.x == j.girl.wannaPlaceX) {
-            j.girl.came(j.girl.width/2);
+            j.girl.setX(j.girl.width/2);
             j.setScreen(j.screenGarden);
         }
         // идём на экран FORREST
         if(j.girl.wannaPlaceX == btnGoForrest.girlWannaPlaceX && j.girl.x == j.girl.wannaPlaceX) {
-            j.girl.came(SCR_WIDTH-j.girl.width/2);
+            j.girl.setX(SCR_WIDTH-j.girl.width/2);
             j.setScreen(j.screenForrest);
         }
 
@@ -67,11 +68,13 @@ public class ScreenField implements Screen {
 
         // артефакты не в корзине
         for (Artefact a : j.artefacts)
-            if (a != null && !a.inBasket && a.startScreen == current_SCREEN)
+            if (a != null && !a.inBasket && (a.startScreen == current_SCREEN && !a.isReleased || a.finishScreen == current_SCREEN && a.isReleased))
                 j.batch.draw(j.imgArt[a.name], a.x, a.y, a.width, a.height);
 
         // девочка
         j.batch.draw(j.imgGirl[j.girl.faza], j.girl.x - j.girl.width / 2, j.girl.y, j.girl.width / 2, 0, j.girl.width, j.girl.height, j.girl.goLeft ? 1 : -1, 1, 0);
+
+        j.batch.draw(imgBush, 0, 0, SCR_WIDTH, 200*KY);
 
         // корзина
         if (j.basket.isOpen) {
