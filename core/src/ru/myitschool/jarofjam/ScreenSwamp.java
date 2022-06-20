@@ -9,18 +9,19 @@ import com.badlogic.gdx.graphics.Texture;
 public class ScreenSwamp implements Screen {
     final JarOfJam j;
     //JojButton btnGoForrestL, btnGoForrestR;
-    JojButton btnGoForrest;
-    Texture imgBG;
+    JojButton btnDown;
+    Texture imgBG, imgFrog;
 
     ScreenSwamp(JarOfJam j) {
         this.j = j;
 
         imgBG = new Texture("screens/swamp.jpg");
+        imgFrog = new Texture("frog.png");
 
         // кнопки переход в лес
         //btnGoForrestR = new JojButton(SCR_WIDTH-j.girl.width/2, 200*KY, SCR_WIDTH-j.girl.width/2-100*KX, 300*KY, SCR_WIDTH-j.girl.width/2);
         //btnGoForrestL = new JojButton(0, 200*KY, 100*KX, 300*KY, j.girl.width/2);
-        btnGoForrest = new JojButton(600*KX, 5*KY, 420*KX, 150*KY, 810*KX);
+        btnDown = new JojButton(600*KX, 5*KY, 300*KX, 100*KY, 750*KX, j.imgArrowDown);
 
 
         // создаём артефакты, которые будут на этом уровне
@@ -42,7 +43,7 @@ public class ScreenSwamp implements Screen {
 
             //if (btnGoForrestL.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnGoForrestL.girlWannaPlaceX);
             //if (btnGoForrestR.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnGoForrestR.girlWannaPlaceX);
-            if (btnGoForrest.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnGoForrest.girlWannaPlaceX);
+            if (btnDown.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnDown.girlWannaPlaceX);
         }
 
         // игровые события
@@ -53,7 +54,7 @@ public class ScreenSwamp implements Screen {
             j.girl.setX(SCR_WIDTH/2);
             j.setScreen(j.screenForrest);
         }*/
-        if(j.girl.wannaPlaceX == btnGoForrest.girlWannaPlaceX && j.girl.came(j.girl.wannaPlaceX)) {
+        if(j.girl.wannaPlaceX == btnDown.girlWannaPlaceX && j.girl.came(j.girl.wannaPlaceX)) {
             j.girl.setX(SCR_WIDTH/2);
             j.setScreen(j.screenForrest);
         }
@@ -69,6 +70,7 @@ public class ScreenSwamp implements Screen {
         j.batch.setProjectionMatrix(j.camera.combined);
         j.batch.begin();
         j.batch.draw(imgBG, 0, 0, SCR_WIDTH, SCR_HEIGHT);
+        j.batch.draw(imgFrog, 1322*KX, 474*KY, 338*KX, 245*KY);
 
         // артефакты не в корзине
         for (Artefact a : j.artefacts)
@@ -86,6 +88,7 @@ public class ScreenSwamp implements Screen {
         }
         j.batch.draw(j.imgBasket, j.basket.x, j.basket.y, j.basket.width, j.basket.height); // сама корзинка
         j.batch.draw(j.imgCross, j.btnGoMenu.x, j.btnGoMenu.y, j.btnGoMenu.width, j.btnGoMenu.height); // выход в главное меню
+        j.batch.draw(btnDown.img, btnDown.x, btnDown.y, btnDown.width, btnDown.height); // стрелка вниз
 
         j.batch.end();
     }

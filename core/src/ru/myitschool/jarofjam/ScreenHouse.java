@@ -17,7 +17,7 @@ public class ScreenHouse implements Screen {
     Texture imgBasket2;
     Texture imgWindow;
 
-    JojButton btnGoGarden, btnGoChulan;
+    JojButton btnLeft, btnRight;
     JojButton btnWindow;
     JojButton btnTalkGrandma;
 
@@ -51,14 +51,13 @@ public class ScreenHouse implements Screen {
         imgSpider = new Texture("spider.png");
         imgWindow = new Texture("window.jpg");
 
-        // кнопка переход в сад
-        btnGoGarden = new JojButton(0, 200*KY, 100*KX, 300*KY, j.girl.width/2);
-        // кнопка переход в чулан
-        btnGoChulan = new JojButton(SCR_WIDTH-j.girl.width/2, 200*KY, SCR_WIDTH-j.girl.width/2-100*KX, 300*KY, SCR_WIDTH-j.girl.width/2);
-        // кнопка переход в сад
+        // кнопки стрелки
+        btnLeft = new JojButton(0, 200*KY, 100*KX, 300*KY, j.girl.width/2, j.imgArrowLeft);
+        btnRight = new JojButton(SCR_WIDTH-100*KX, 200*KY, 100*KX, 300*KY, SCR_WIDTH-j.girl.width/2, j.imgArrowRight);
+        // кнопка окно
         btnWindow = new JojButton(167*KX, 658*KY, 463*KX, 316*KY, j.girl.width/2);
         // кнопка разговор с бабкой
-        btnTalkGrandma = new JojButton(1000*KX, 650*KY, 539*KX, 176*KY, SCR_WIDTH/2);
+        btnTalkGrandma = new JojButton(1000*KX, 650*KY, 539*KX, 176*KY, SCR_WIDTH/2f);
 
         // создаём артефакты, которые будут на этом уровне
         j.artefacts[SUGAR] = new Artefact(SUGAR, 500*KX, 420*KY, 72*KX, 54*KY, HOUSE, 1660*KX, 625*KY, 150*KX, 115*KY, HOUSE, -1660*KX, 0*KY, j);
@@ -88,8 +87,8 @@ public class ScreenHouse implements Screen {
                 return;
             }
 
-            if (btnGoGarden.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnGoGarden.girlWannaPlaceX);
-            if (btnGoChulan.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnGoChulan.girlWannaPlaceX);
+            if (btnLeft.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnLeft.girlWannaPlaceX);
+            if (btnRight.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnRight.girlWannaPlaceX);
             if (btnWindow.hit(j.touch.x, j.touch.y)) {
                 isWindow = true;
                 nDial = 0;
@@ -104,12 +103,12 @@ public class ScreenHouse implements Screen {
         // игровые события
         j.girl.move();
         // идём на экран Garden
-        if(j.girl.wannaPlaceX == btnGoGarden.girlWannaPlaceX && j.girl.x == j.girl.wannaPlaceX) {
+        if(j.girl.wannaPlaceX == btnLeft.girlWannaPlaceX && j.girl.x == j.girl.wannaPlaceX) {
             j.girl.setX(SCR_WIDTH-j.girl.width/2);
             j.setScreen(j.screenGarden);
         }
         // идём на экран CHULAN
-        if(j.girl.wannaPlaceX == btnGoChulan.girlWannaPlaceX && j.girl.x == j.girl.wannaPlaceX) {
+        if(j.girl.wannaPlaceX == btnRight.girlWannaPlaceX && j.girl.x == j.girl.wannaPlaceX) {
             j.girl.setX(j.girl.width/2);
             j.setScreen(j.screenChulan);
         }
@@ -213,6 +212,8 @@ public class ScreenHouse implements Screen {
         }
         j.batch.draw(j.imgBasket, j.basket.x, j.basket.y, j.basket.width, j.basket.height); // сама корзинка
         j.batch.draw(j.imgCross, j.btnGoMenu.x, j.btnGoMenu.y, j.btnGoMenu.width, j.btnGoMenu.height); // выход в главное меню
+        j.batch.draw(btnLeft.img, btnLeft.x, btnLeft.y, btnLeft.width, btnLeft.height); // стрелка влево
+        j.batch.draw(btnRight.img, btnRight.x, btnRight.y, btnRight.width, btnRight.height); // стрелка вправо
 
         if(isWindow) {
             j.batch.draw(imgWindow, 0, 0, SCR_WIDTH, SCR_HEIGHT);

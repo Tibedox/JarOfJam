@@ -12,7 +12,7 @@ public class ScreenChulan implements Screen {
     Texture imgBG;
     Texture imgRecipe;
 
-    JojButton btnGoHouse;
+    JojButton btnLeft;
     JojButton btnRecipe;
     boolean isRecipeShow;
 
@@ -23,8 +23,8 @@ public class ScreenChulan implements Screen {
         imgRecipe = new Texture("recipe.jpg");
 
         // кнопка переход в дом
-        btnGoHouse = new JojButton(125 * KX, 240 * KY, 186 * KX, 728 * KY, j.girl.width/2);
-        //btnGoHouse = new JojButton(0, 200*KY, 100*KX, 300*KY, j.girl.width/2);
+        //btnGoHouse = new JojButton(125 * KX, 240 * KY, 186 * KX, 728 * KY, j.girl.width/2);
+        btnLeft = new JojButton(0, 200*KY, 100*KX, 300*KY, j.girl.width/2, j.imgArrowLeft);
         // кнопка спотреть рецепт
         btnRecipe = new JojButton(932 * KX, 432 * KY, 110 * KX, 75 * KY, 400*KX);
 
@@ -51,13 +51,13 @@ public class ScreenChulan implements Screen {
             if(isRecipeShow) isRecipeShow = false;
             else if (btnRecipe.hit(j.touch.x, j.touch.y)) isRecipeShow = true;
 
-            if (btnGoHouse.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnGoHouse.girlWannaPlaceX);
+            if (btnLeft.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnLeft.girlWannaPlaceX);
         }
 
         // игровые события
         j.girl.move();
         // идём на экран HOUSE
-        if (j.girl.wannaPlaceX == btnGoHouse.girlWannaPlaceX && j.girl.came(j.girl.wannaPlaceX)) {
+        if (j.girl.wannaPlaceX == btnLeft.girlWannaPlaceX && j.girl.came(j.girl.wannaPlaceX)) {
             j.girl.setX(SCR_WIDTH - j.girl.width / 2);
             j.setScreen(j.screenHouse);
         }
@@ -109,6 +109,7 @@ public class ScreenChulan implements Screen {
         }
         j.batch.draw(j.imgBasket, j.basket.x, j.basket.y, j.basket.width, j.basket.height); // сама корзинка
         j.batch.draw(j.imgCross, j.btnGoMenu.x, j.btnGoMenu.y, j.btnGoMenu.width, j.btnGoMenu.height); // выход в главное меню
+        j.batch.draw(btnLeft.img, btnLeft.x, btnLeft.y, btnLeft.width, btnLeft.height); // стрелка влево
 
         if(isRecipeShow) j.batch.draw(imgRecipe, 0, 0, SCR_WIDTH, SCR_HEIGHT);
 

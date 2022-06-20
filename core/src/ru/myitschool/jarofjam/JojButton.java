@@ -31,13 +31,14 @@ public class JojButton {
         this.girlWannaPlaceX = girlWannaPlaceX;
     }
 
-   /* JojButton(float x, float y, float width, float height, Texture img) {
+    JojButton(float x, float y, float width, float height, float girlWannaPlaceX, Texture img) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.girlWannaPlaceX = girlWannaPlaceX;
         this.img = img;
-    }*/
+    }
 
     boolean hit(float tx, float ty) {
         if(text == null) return tx > this.x && tx < this.x + this.width && ty > this.y && ty < this.y + this.height;

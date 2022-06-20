@@ -15,7 +15,7 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class ScreenGarden implements Screen {
     final JarOfJam j;
-    JojButton btnGoHouse, btnGoField;
+    JojButton btnLeft, btnRight;
     Texture imgBG;
 
     ScreenGarden(JarOfJam j) {
@@ -24,8 +24,8 @@ public class ScreenGarden implements Screen {
         imgBG = new Texture("screens/garden.jpg");
 
         // кнопки перехода в дом и на поле
-        btnGoHouse = new JojButton(SCR_WIDTH-j.girl.width/2, 200*KY, SCR_WIDTH-j.girl.width/2-100*KX, 300*KY, SCR_WIDTH-j.girl.width/2);
-        btnGoField = new JojButton(0, 200*KY, 100*KX, 300*KY, j.girl.width/2);
+        btnLeft = new JojButton(0, 200*KY, 100*KX, 300*KY, j.girl.width/2, j.imgArrowLeft);
+        btnRight = new JojButton(SCR_WIDTH-100*KX, 200*KY, 100*KX, 300*KY, SCR_WIDTH-j.girl.width/2, j.imgArrowRight);
 
         // создаём артефакты, которые будут на этом уровне
         j.artefacts[STRAWBERRY] = new Artefact(STRAWBERRY, 887*KX, 400*KY, 85*KX, 89*KY, GARDEN, 1660*KX, 625*KY, 150*KX, 115*KY, HOUSE, -1660*KX, 0*KY, j);
@@ -43,23 +43,22 @@ public class ScreenGarden implements Screen {
             j.touch.set((float)Gdx.input.getX(), (float)Gdx.input.getY(), 0);
             j.camera.unproject(j.touch);
 
-            if (btnGoHouse.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnGoHouse.girlWannaPlaceX);
-            if (btnGoField.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnGoField.girlWannaPlaceX);
+            if (btnLeft.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnLeft.girlWannaPlaceX);
+            if (btnRight.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnRight.girlWannaPlaceX);
         }
 
         // игровые события
         j.girl.move();
-        // идём на экран HOUSE
-        if(j.girl.wannaPlaceX == btnGoHouse.girlWannaPlaceX && j.girl.x == j.girl.wannaPlaceX) {
-            j.girl.setX(j.girl.width/2);
-            j.setScreen(j.screenHouse);
-        }
         // идём на экран FIELD
-        if(j.girl.wannaPlaceX == btnGoField.girlWannaPlaceX && j.girl.x == j.girl.wannaPlaceX) {
+        if(j.girl.wannaPlaceX == btnLeft.girlWannaPlaceX && j.girl.x == j.girl.wannaPlaceX) {
             j.girl.setX(SCR_WIDTH-j.girl.width/2);
             j.setScreen(j.screenField);
         }
-
+        // идём на экран HOUSE
+        if(j.girl.wannaPlaceX == btnRight.girlWannaPlaceX && j.girl.x == j.girl.wannaPlaceX) {
+            j.girl.setX(j.girl.width/2);
+            j.setScreen(j.screenHouse);
+        }
         // если девочка дошла до артефакта, то он попадает в корзину
         if(j.artefacts[STRAWBERRY].hit(j.girl.x) && j.girl.artefact == j.artefacts[STRAWBERRY] && !j.artefacts[STRAWBERRY].inBasket) {
             j.basket.addArtefact(j.artefacts[STRAWBERRY]);
@@ -88,6 +87,8 @@ public class ScreenGarden implements Screen {
         }
         j.batch.draw(j.imgBasket, j.basket.x, j.basket.y, j.basket.width, j.basket.height); // сама корзинка
         j.batch.draw(j.imgCross, j.btnGoMenu.x, j.btnGoMenu.y, j.btnGoMenu.width, j.btnGoMenu.height); // выход в главное меню
+        j.batch.draw(btnLeft.img, btnLeft.x, btnLeft.y, btnLeft.width, btnLeft.height); // стрелка влево
+        j.batch.draw(btnRight.img, btnRight.x, btnRight.y, btnRight.width, btnRight.height); // стрелка вправо
 
         j.batch.end();
     }

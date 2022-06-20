@@ -51,6 +51,7 @@ public class JarOfJam extends Game {
     Texture[] imgArt = new Texture[N_ARTEFACTS];
     Texture imgPanel;
     Texture imgCross;
+    Texture imgArrowLeft, imgArrowRight, imgArrowUp, imgArrowDown;
 
     Girl girl;
     Basket basket;
@@ -67,6 +68,10 @@ public class JarOfJam extends Game {
 
         imgBasket = new Texture("basket.png");
         imgCross = new Texture("sun.png");
+        imgArrowLeft = new Texture("arrowleft.png");
+        imgArrowRight = new Texture("arrowright.png");
+        imgArrowUp = new Texture("arrowup.png");
+        imgArrowDown = new Texture("arrowdown.png");
 
         // картинки артефактов
         imgArt[HONEY] = new Texture("artefacts/honey.png");

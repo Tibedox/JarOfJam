@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class ScreenForrest implements Screen {
     final JarOfJam j;
-    JojButton btnGoField, btnRemoveStone, btnGoSwamp;
+    JojButton btnRight, btnRemoveStone, btnGoSwamp;
     Texture imgBG;
     Texture imgRock, imgBear;
 
@@ -20,7 +20,9 @@ public class ScreenForrest implements Screen {
         imgRock = new Texture("rock.png");
 
         // кнопка переход в FIELD
-        btnGoField = new JojButton(SCR_WIDTH-j.girl.width/2, 200*KY, SCR_WIDTH-j.girl.width/2-100*KX, 300*KY, SCR_WIDTH-j.girl.width/2);
+        // кнопки стрелки
+        //btnLeft = new JojButton(0, 200*KY, 100*KX, 300*KY, j.girl.width/2, j.imgArrowLeft);
+        btnRight = new JojButton(SCR_WIDTH-100*KX, 200*KY, 100*KX, 300*KY, SCR_WIDTH-j.girl.width/2, j.imgArrowRight);
         btnRemoveStone = new JojButton(255 * KX, 315 * KY, 150 * KX, 145 * KY, 255 * KX);
         btnGoSwamp = new JojButton(160 * KX, 270 * KY, 280 * KX, 400 * KY, 200*KX);
 
@@ -41,7 +43,8 @@ public class ScreenForrest implements Screen {
             j.touch.set((float)Gdx.input.getX(), (float)Gdx.input.getY(), 0);
             j.camera.unproject(j.touch);
 
-            if (btnGoField.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnGoField.girlWannaPlaceX);
+            //if (btnLeft.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnLeft.girlWannaPlaceX);
+            if (btnRight.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnRight.girlWannaPlaceX);
             if(quest_STONE) if (btnGoSwamp.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnGoSwamp.girlWannaPlaceX);
             if (quest_FRAGMENT && btnRemoveStone.hit(j.touch.x, j.touch.y)) {
                 quest_STONE = true;
@@ -52,7 +55,7 @@ public class ScreenForrest implements Screen {
         // игровые события
         j.girl.move();
         // идём на экран HOME
-        if(j.girl.wannaPlaceX == btnGoField.girlWannaPlaceX && j.girl.x == j.girl.wannaPlaceX) {
+        if(j.girl.wannaPlaceX == btnRight.girlWannaPlaceX && j.girl.x == j.girl.wannaPlaceX) {
             j.girl.setX(j.girl.width/2);
             j.setScreen(j.screenField);
         }
@@ -108,6 +111,8 @@ public class ScreenForrest implements Screen {
         }
         j.batch.draw(j.imgBasket, j.basket.x, j.basket.y, j.basket.width, j.basket.height); // сама корзинка
         j.batch.draw(j.imgCross, j.btnGoMenu.x, j.btnGoMenu.y, j.btnGoMenu.width, j.btnGoMenu.height); // выход в главное меню
+        //j.batch.draw(btnLeft.img, btnLeft.x, btnLeft.y, btnLeft.width, btnLeft.height); // стрелка влево
+        j.batch.draw(btnRight.img, btnRight.x, btnRight.y, btnRight.width, btnRight.height); // стрелка вправо
 
         j.batch.end();
     }
