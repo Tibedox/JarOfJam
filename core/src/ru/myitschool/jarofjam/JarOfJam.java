@@ -21,8 +21,9 @@ public class JarOfJam extends Game {
     // артефакты
     public static final int HONEY = 0, TREE1 = 1, TREE2 = 2, TREE3 = 3, TREE4 = 4,TREE5 = 5, ROPE = 6;
     public static final int KEY = 7, JUGWATER = 8, SUGAR = 9, FRAGMENT1 = 10, FRAGMENT2 = 11, FRAGMENT3 = 12, FRAGMENT4 = 13;
-    public static final int JAROFJAM = 14, POT = 15, MATCHES = 16, STRAWBERRY = 17, RASPBERRY = 18;
-    public static final int N_ARTEFACTS = 19;
+    public static final int JAROFJAM = 14, POT = 15, MATCHES = 16, STRAWBERRY = 17, RASPBERRY = 18, ROPE2 = 19;
+
+    public static final int N_ARTEFACTS = 20;
     // экраны
     public static final int MENU = 0, HOUSE = 1, FIELD = 2, FORREST = 3, SWAMP = 4, CHULAN = 5, INTRO = 6, GARDEN = 7;
     public static int current_SCREEN, previous_SCREEN = HOUSE; // активный экран
@@ -77,6 +78,7 @@ public class JarOfJam extends Game {
         imgArt[HONEY] = new Texture("artefacts/honey.png");
         for (int i = TREE1, j=1; i <= TREE5; i++, j++) imgArt[i] = new Texture("artefacts/tree"+j+".png");
         imgArt[ROPE] = new Texture("artefacts/rope.png");
+        imgArt[ROPE2] = new Texture("artefacts/rope2.png");
         imgArt[KEY] = new Texture("artefacts/key.png");
         imgArt[MATCHES] = new Texture("artefacts/matches.png");
         imgArt[JUGWATER] = new Texture("artefacts/jugwater.png");

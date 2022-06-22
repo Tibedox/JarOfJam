@@ -57,11 +57,11 @@ public class ScreenHouse implements Screen {
         // кнопка окно
         btnWindow = new JojButton(167*KX, 658*KY, 463*KX, 316*KY, j.girl.width/2);
         // кнопка разговор с бабкой
-        btnTalkGrandma = new JojButton(1000*KX, 650*KY, 539*KX, 176*KY, SCR_WIDTH/2f);
+        btnTalkGrandma = new JojButton(1000*KX, 660*KY, 500*KX, 176*KY, SCR_WIDTH/2f);
 
         // создаём артефакты, которые будут на этом уровне
         j.artefacts[SUGAR] = new Artefact(SUGAR, 500*KX, 420*KY, 72*KX, 54*KY, HOUSE, 1660*KX, 625*KY, 150*KX, 115*KY, HOUSE, -1660*KX, 0*KY, j);
-        j.artefacts[ROPE] = new Artefact(ROPE, 1420*KX, 218*KY, 200*KX, 200*KY, HOUSE, 145*KX, 368*KY, 377*KX, 492*KY, FORREST, 145*KX, 300*KY, j);
+        j.artefacts[ROPE] = new Artefact(ROPE, 1420*KX, 218*KY, 200*KX, 200*KY, HOUSE, 800*KX, 322*KY, 300*KX, 340*KY, SWAMP, 820*KX, 310*KY, j);
         j.artefacts[JUGWATER] = new Artefact(JUGWATER, 200*KX, 420*KY, 124*KX, 154*KY, HOUSE, 1660*KX, 625*KY, 150*KX, 115*KY, HOUSE, -1660*KX, 0*KY, j);
         j.artefacts[MATCHES] = new Artefact(MATCHES, 320*KX, 420*KY, 85*KX, 36*KY, HOUSE, 1740*KX, 430*KY, 75*KX, 123*KY, HOUSE, -1660*KX, 0*KY, j);
         j.artefacts[FRAGMENT1] = new Artefact(FRAGMENT1, 1500*KX, 675*KY, 50*KX, 54*KY, HOUSE, 255 * KX, 315 * KY, 150 * KX, 145 * KY, FORREST, 358 * KX, 385 * KY, j);

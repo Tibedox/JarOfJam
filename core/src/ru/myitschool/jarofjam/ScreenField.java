@@ -24,6 +24,7 @@ public class ScreenField implements Screen {
 
         // создаём артефакты, которые будут на этом уровне
         j.artefacts[RASPBERRY] = new Artefact(RASPBERRY, 568*KX, 176*KY, 200*KX, 150*KY, FIELD, 1660*KX, 625*KY, 150*KX, 115*KY, HOUSE, -1660*KX, 0*KY, j);
+        j.artefacts[TREE5] = new Artefact(TREE5, 963*KX, 120*KY, 163*KX, 51*KY, FIELD, 800*KX, 322*KY, 300*KX, 340*KY, SWAMP, 880*KX, 620*KY, j);
     }
 
     @Override
@@ -58,6 +59,10 @@ public class ScreenField implements Screen {
         // если девочка дошла до артефакта, то он попадает в корзину
         if(j.artefacts[RASPBERRY].hit(j.girl.x) && j.girl.artefact == j.artefacts[RASPBERRY] && !j.artefacts[RASPBERRY].inBasket) {
             j.basket.addArtefact(j.artefacts[RASPBERRY]);
+            j.girl.artefact = null;
+        }
+        if(j.artefacts[TREE5].hit(j.girl.x) && j.girl.artefact == j.artefacts[TREE5] && !j.artefacts[TREE5].inBasket) {
+            j.basket.addArtefact(j.artefacts[TREE5]);
             j.girl.artefact = null;
         }
 

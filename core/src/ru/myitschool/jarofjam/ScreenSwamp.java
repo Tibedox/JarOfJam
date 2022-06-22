@@ -25,8 +25,10 @@ public class ScreenSwamp implements Screen {
 
 
         // создаём артефакты, которые будут на этом уровне
-  /*  j.artefacts[STRAWBERRY] = new Artefact(STRAWBERRY, 863*KX, 183*KY, 150*KX, 150*KY, FIELD,
-            1660*KX, 625*KY, 150*KX, 115*KY, HOUSE, 1660*KX, 600*KY, j.imgStrawberry, j.basket);*/
+        j.artefacts[TREE1] = new Artefact(TREE1, 1363*KX, 123*KY, 270*KX, 105*KY, SWAMP, 800*KX, 322*KY, 300*KX, 340*KY, SWAMP, 800*KX, 310*KY, j);
+        j.artefacts[TREE2] = new Artefact(TREE2, 200*KX, 183*KY, 254*KX, 94*KY, SWAMP, 800*KX, 322*KY, 300*KX, 340*KY, SWAMP, 818*KX, 410*KY, j);
+        j.artefacts[TREE3] = new Artefact(TREE3, 800*KX, 183*KY, 233*KX, 72*KY, SWAMP, 800*KX, 322*KY, 300*KX, 340*KY, SWAMP, 835*KX, 499*KY, j);
+        j.artefacts[TREE4] = new Artefact(TREE4, 663*KX, 120*KY, 197*KX, 57*KY, SWAMP, 800*KX, 322*KY, 300*KX, 340*KY, SWAMP, 860*KX, 567*KY, j);
     }
 
     @Override
@@ -60,10 +62,30 @@ public class ScreenSwamp implements Screen {
         }
 
         // если девочка дошла до артефакта, то он попадает в корзину
-/*     if(j.artefacts[STRAWBERRY].hit(j.girl.x) && j.girl.artefact == j.artefacts[STRAWBERRY] && !j.artefacts[STRAWBERRY].inBasket) {
-        j.basket.addArtefact(j.artefacts[STRAWBERRY]);
-        j.girl.artefact = null;
-    }*/
+        for (int i = TREE1; i <= TREE4; i++) {
+            if(j.artefacts[i].hit(j.girl.x) && j.girl.artefact == j.artefacts[i] && !j.artefacts[i].inBasket) {
+                j.basket.addArtefact(j.artefacts[i]);
+                j.girl.artefact = null;
+            }
+        }
+        // если девочка дошла до места, куда положить артефакт, то он пропадает из корзины
+        for (int i = TREE1; i <= TREE5; i++) {
+            if (j.artefacts[i].hitFinish(j.girl.x) && j.girl.artefact == j.artefacts[i] && j.artefacts[i].inBasket) {
+                j.basket.removeArtefact(j.artefacts[i]);
+                j.girl.artefact = null;
+            }
+        }
+        boolean bridge = true;
+        for (int i = TREE1; i <= TREE5; i++) if(!j.artefacts[i].isReleased) bridge = false;
+        if(bridge) {
+            if (j.artefacts[ROPE].hitFinish(j.girl.x) && j.girl.artefact == j.artefacts[ROPE] && j.artefacts[ROPE].inBasket) {
+                j.basket.removeArtefact(j.artefacts[ROPE]);
+                j.girl.artefact = null;
+                j.imgArt[ROPE] = j.imgArt[ROPE2];
+                j.artefacts[ROPE].width = 244;
+                j.artefacts[ROPE].height = 361;
+            }
+        }
 
         // отрисовка
         j.camera.update();
