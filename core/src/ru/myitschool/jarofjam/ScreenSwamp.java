@@ -21,7 +21,7 @@ public class ScreenSwamp implements Screen {
         // кнопки переход в лес
         //btnGoForrestR = new JojButton(SCR_WIDTH-j.girl.width/2, 200*KY, SCR_WIDTH-j.girl.width/2-100*KX, 300*KY, SCR_WIDTH-j.girl.width/2);
         //btnGoForrestL = new JojButton(0, 200*KY, 100*KX, 300*KY, j.girl.width/2);
-        btnDown = new JojButton(600*KX, 5*KY, 300*KX, 100*KY, 750*KX, j.imgArrowDown);
+        btnDown = new JojButton(700*KX, 0*KY, 300*KX, 100*KY, 750*KX, j.imgArrowDown);
 
 
         // создаём артефакты, которые будут на этом уровне
@@ -45,7 +45,11 @@ public class ScreenSwamp implements Screen {
 
             //if (btnGoForrestL.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnGoForrestL.girlWannaPlaceX);
             //if (btnGoForrestR.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnGoForrestR.girlWannaPlaceX);
-            if (btnDown.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnDown.girlWannaPlaceX);
+            boolean flag = true;
+            for (int i = 0; i < j.basket.artefacts.size(); i++){
+                if(j.basket.artefacts.get(i).isMove) flag = false;
+            }
+            if (flag && btnDown.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnDown.girlWannaPlaceX);
         }
 
         // игровые события

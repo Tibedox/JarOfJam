@@ -36,10 +36,12 @@ public class Basket {
     }
 
     void setArtefactsXY(){
+        float x = 200 * KX;
         for(int i=0; i<artefacts.size(); i++) {
             artefacts.get(i).goToBasket();
-            artefacts.get(i).x = 190 * KX + i * (artefacts.get(i).basketWidth+5*KX);
-            artefacts.get(i).y = 40 * KY;
+            artefacts.get(i).x = x;
+            artefacts.get(i).y = 40 * KY+(60*KY-artefacts.get(i).basketHeight)/2;
+            x += artefacts.get(i).basketWidth+5*KX;
         }
     }
 
