@@ -38,7 +38,6 @@ public class ScreenChulan implements Screen {
 
     public void show() {
         current_SCREEN = CHULAN;
-        //j.saveGame();
     }
 
     public void render(float delta) {

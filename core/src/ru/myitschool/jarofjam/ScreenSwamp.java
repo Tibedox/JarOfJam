@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 public class ScreenSwamp implements Screen {
     final JarOfJam j;
     //JojButton btnGoForrestL, btnGoForrestR;
-    JojButton btnDown;
+    JojButton btnDown, btnGoCave;
     Texture imgBG, imgFrog;
 
     ScreenSwamp(JarOfJam j) {
@@ -22,7 +22,7 @@ public class ScreenSwamp implements Screen {
         //btnGoForrestR = new JojButton(SCR_WIDTH-j.girl.width/2, 200*KY, SCR_WIDTH-j.girl.width/2-100*KX, 300*KY, SCR_WIDTH-j.girl.width/2);
         //btnGoForrestL = new JojButton(0, 200*KY, 100*KX, 300*KY, j.girl.width/2);
         btnDown = new JojButton(700*KX, 0*KY, 300*KX, 100*KY, 750*KX, j.imgArrowDown);
-
+        btnGoCave = new JojButton(860 * KX, 600 * KY, 280 * KX, 400 * KY, 900*KX);
 
         // создаём артефакты, которые будут на этом уровне
         j.artefacts[TREE1] = new Artefact(TREE1, 1363*KX, 123*KY, 270*KX, 105*KY, SWAMP, 800*KX, 322*KY, 300*KX, 340*KY, SWAMP, 800*KX, 310*KY, j);
@@ -33,7 +33,7 @@ public class ScreenSwamp implements Screen {
 
     @Override
     public void show() {
-        current_SCREEN = SWAMP;
+        current_SCREEN = CAVE;
     }
 
     @Override
@@ -45,6 +45,7 @@ public class ScreenSwamp implements Screen {
 
             //if (btnGoForrestL.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnGoForrestL.girlWannaPlaceX);
             //if (btnGoForrestR.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnGoForrestR.girlWannaPlaceX);
+            if(quest_BRIDGE) if (btnGoCave.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnGoCave.girlWannaPlaceX);
             boolean flag = true;
             for (int i = 0; i < j.basket.artefacts.size(); i++){
                 if(j.basket.artefacts.get(i).isMove) flag = false;

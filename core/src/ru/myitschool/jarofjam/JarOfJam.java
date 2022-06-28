@@ -25,10 +25,11 @@ public class JarOfJam extends Game {
 
     public static final int N_ARTEFACTS = 20;
     // экраны
-    public static final int MENU = 0, HOUSE = 1, FIELD = 2, FORREST = 3, SWAMP = 4, CHULAN = 5, INTRO = 6, GARDEN = 7;
+    public static final int MENU = 0, HOUSE = 1, FIELD = 2, FORREST = 3, SWAMP = 4, CHULAN = 5;
+    public static final int INTRO = 6, GARDEN = 7, CAVE = 8, RIDERS = 9;
     public static int current_SCREEN, previous_SCREEN = HOUSE; // активный экран
     // задания
-    public static boolean quest_JAM, quest_ROPE, quest_FRAGMENT, quest_STONE;
+    public static boolean quest_JAM, quest_ROPE, quest_FRAGMENT, quest_STONE, quest_BRIDGE, quest_RIDERS;
 
     SpriteBatch batch;
     OrthographicCamera camera;
@@ -45,6 +46,8 @@ public class JarOfJam extends Game {
     ScreenField screenField;
     ScreenForrest screenForrest;
     ScreenSwamp screenSwamp;
+    ScreenCave screenCave;
+    ScreenRiders screenRiders;
 
     Texture imgBasket;
     Texture imgAtlasGirl;
@@ -107,6 +110,8 @@ public class JarOfJam extends Game {
         this.screenField = new ScreenField(this);
         this.screenForrest = new ScreenForrest(this);
         this.screenSwamp = new ScreenSwamp(this);
+        this.screenCave = new ScreenCave(this);
+        this.screenRiders = new ScreenRiders(this);
         btnGoMenu = new JojButton(SCR_WIDTH-60*KX, SCR_HEIGHT-60*KY, 50*KX, 50*KY, 0); // кнопка выход в менею
         this.setScreen(this.screenMenu);
     }
@@ -144,6 +149,8 @@ public class JarOfJam extends Game {
         prefs.putBoolean("quest_ROPE", quest_ROPE);
         prefs.putBoolean("quest_FRAGMENT", quest_FRAGMENT);
         prefs.putBoolean("quest_STONE", quest_STONE);
+        prefs.putBoolean("quest_BRIDGE", quest_BRIDGE);
+        prefs.putBoolean("quest_RIDERS", quest_RIDERS);
         prefs.putFloat("girl.x", girl.x);
         prefs.putFloat("girl.y", girl.y);
         for (int i = 0; i < artefacts.length; i++) {
@@ -168,6 +175,8 @@ public class JarOfJam extends Game {
         if(prefs.contains("quest_ROPE")) quest_ROPE = prefs.getBoolean("quest_ROPE", quest_ROPE);
         if(prefs.contains("quest_FRAGMENT")) quest_FRAGMENT = prefs.getBoolean("quest_FRAGMENT", quest_FRAGMENT);
         if(prefs.contains("quest_STONE")) quest_STONE = prefs.getBoolean("quest_STONE", quest_STONE);
+        if(prefs.contains("quest_BRIDGE")) quest_BRIDGE = prefs.getBoolean("quest_BRIDGE", quest_BRIDGE);
+        if(prefs.contains("quest_RIDERS")) quest_RIDERS = prefs.getBoolean("quest_RIDERS", quest_RIDERS);
         if(prefs.contains("girl.x")) girl.x = prefs.getFloat("girl.x", girl.x);
         if(prefs.contains("girl.y")) girl.y = prefs.getFloat("girl.y", girl.y);
 
