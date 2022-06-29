@@ -1,5 +1,6 @@
 package ru.myitschool.jarofjam;
 
+import static ru.myitschool.jarofjam.JarOfJam.CAVE;
 import static ru.myitschool.jarofjam.JarOfJam.FIELD;
 import static ru.myitschool.jarofjam.JarOfJam.HOUSE;
 import static ru.myitschool.jarofjam.JarOfJam.KX;
@@ -38,7 +39,7 @@ public class ScreenCave implements Screen {
 
     @Override
     public void show() {
-        current_SCREEN = FIELD;
+        current_SCREEN = CAVE;
     }
 
     @Override

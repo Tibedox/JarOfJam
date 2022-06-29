@@ -33,7 +33,7 @@ public class ScreenSwamp implements Screen {
 
     @Override
     public void show() {
-        current_SCREEN = CAVE;
+        current_SCREEN = SWAMP;
     }
 
     @Override
@@ -48,7 +48,10 @@ public class ScreenSwamp implements Screen {
             if(quest_BRIDGE) if (btnGoCave.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnGoCave.girlWannaPlaceX);
             boolean flag = true;
             for (int i = 0; i < j.basket.artefacts.size(); i++){
-                if(j.basket.artefacts.get(i).isMove) flag = false;
+                if(j.basket.artefacts.get(i).isMove) {
+                    flag = false;
+                    break;
+                }
             }
             if (flag && btnDown.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnDown.girlWannaPlaceX);
         }
@@ -62,7 +65,7 @@ public class ScreenSwamp implements Screen {
             j.setScreen(j.screenForrest);
         }*/
         if(j.girl.wannaPlaceX == btnDown.girlWannaPlaceX && j.girl.came(j.girl.wannaPlaceX)) {
-            j.girl.setX(SCR_WIDTH/2);
+            j.girl.setX(SCR_WIDTH/2f);
             j.setScreen(j.screenForrest);
         }
 
@@ -81,7 +84,10 @@ public class ScreenSwamp implements Screen {
             }
         }
         boolean bridge = true;
-        for (int i = TREE1; i <= TREE5; i++) if(!j.artefacts[i].isReleased) bridge = false;
+        for (int i = TREE1; i <= TREE5; i++) if(!j.artefacts[i].isReleased) {
+            bridge = false;
+            break;
+        }
         if(bridge) {
             if (j.artefacts[ROPE].hitFinish(j.girl.x) && j.girl.artefact == j.artefacts[ROPE] && j.artefacts[ROPE].inBasket) {
                 j.basket.removeArtefact(j.artefacts[ROPE]);

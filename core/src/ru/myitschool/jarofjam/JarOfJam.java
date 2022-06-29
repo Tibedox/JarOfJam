@@ -113,6 +113,7 @@ public class JarOfJam extends Game {
         this.screenCave = new ScreenCave(this);
         this.screenRiders = new ScreenRiders(this);
         btnGoMenu = new JojButton(SCR_WIDTH-60*KX, SCR_HEIGHT-60*KY, 50*KX, 50*KY, 0); // кнопка выход в менею
+        //this.setScreen(this.screenSwamp);
         this.setScreen(this.screenMenu);
     }
 
