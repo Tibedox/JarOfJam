@@ -30,7 +30,8 @@ public class JarOfJam extends Game {
     public static final int INTRO = 6, GARDEN = 7, CAVE = 8, RIDERS = 9, END = 10;
     public static int current_SCREEN, previous_SCREEN = HOUSE; // активный экран
     // задания
-    public static boolean quest_JAM, quest_ROPE, quest_FRAGMENT, quest_STONE, quest_CORONA, quest_RIDERS, quest_GAMEOVER;
+    public static boolean quest_JAM, quest_ROPE, quest_FRAGMENT, quest_STONE, quest_CORONA, quest_RIDERS;
+    public static boolean quest_BEAR, quest_GAMEOVER;
 
     SpriteBatch batch;
     OrthographicCamera camera;
@@ -153,6 +154,7 @@ public class JarOfJam extends Game {
         Preferences prefs = Gdx.app.getPreferences("jar_of_jam_preferences"); // заводим preferences
         prefs.putInteger("current_SCREEN", current_SCREEN); // сохраняем число по ключу
         prefs.putInteger("previous_SCREEN", previous_SCREEN);
+        prefs.putBoolean("quest_BEAR", quest_BEAR);
         prefs.putBoolean("quest_JAM", quest_JAM);
         prefs.putBoolean("quest_ROPE", quest_ROPE);
         prefs.putBoolean("quest_FRAGMENT", quest_FRAGMENT);
@@ -179,6 +181,7 @@ public class JarOfJam extends Game {
         Preferences prefs = Gdx.app.getPreferences("jar_of_jam_preferences"); // заводим preferences
         if(prefs.contains("current_SCREEN")) current_SCREEN = prefs.getInteger("current_SCREEN", current_SCREEN);
         if(prefs.contains("previous_SCREEN")) previous_SCREEN = prefs.getInteger("previous_SCREEN", previous_SCREEN);
+        if(prefs.contains("quest_BEAR")) quest_BEAR = prefs.getBoolean("quest_BEAR", quest_BEAR);
         if(prefs.contains("quest_JAM")) quest_JAM = prefs.getBoolean("quest_JAM", quest_JAM);
         if(prefs.contains("quest_ROPE")) quest_ROPE = prefs.getBoolean("quest_ROPE", quest_ROPE);
         if(prefs.contains("quest_FRAGMENT")) quest_FRAGMENT = prefs.getBoolean("quest_FRAGMENT", quest_FRAGMENT);

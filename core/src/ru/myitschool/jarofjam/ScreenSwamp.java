@@ -4,13 +4,22 @@ import static ru.myitschool.jarofjam.JarOfJam.*;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
+
+import java.util.ArrayList;
 
 public class ScreenSwamp implements Screen {
     final JarOfJam j;
-    //JojButton btnGoForrestL, btnGoForrestR;
     JojButton btnDown, btnGoCave;
+    JojButton btnTalkFrog;
     Texture imgBG, imgFrog;
+
+    // диалоги
+    boolean isDialogFrog1, isDialogFrog2;
+    int nDial;
+    ArrayList<Dialog> dialogFrog1 = new ArrayList<>();
+    ArrayList<Dialog> dialogFrog2 = new ArrayList<>();
 
     ScreenSwamp(JarOfJam j) {
         this.j = j;
@@ -18,11 +27,22 @@ public class ScreenSwamp implements Screen {
         imgBG = new Texture("screens/swamp.jpg");
         imgFrog = new Texture("frog.png");
 
+        // загрузка диалогов
+        FileHandle file = Gdx.files.internal("text/dialogFrog1.txt");
+        String[] s = file.readString("UTF-8").split("#");
+        for (int i = 0, k=0; i < s.length/3; i++) dialogFrog1.add(new Dialog(s[k++], Integer.parseInt(s[k++]), Integer.parseInt(s[k++])));
+        file = Gdx.files.internal("text/dialogFrog2.txt");
+        s = file.readString("UTF-8").split("#");
+        for (int i = 0, k=0; i < s.length/3; i++) dialogFrog2.add(new Dialog(s[k++], Integer.parseInt(s[k++]), Integer.parseInt(s[k++])));
+
         // кнопки переход в лес
         //btnGoForrestR = new JojButton(SCR_WIDTH-j.girl.width/2, 200*KY, SCR_WIDTH-j.girl.width/2-100*KX, 300*KY, SCR_WIDTH-j.girl.width/2);
         //btnGoForrestL = new JojButton(0, 200*KY, 100*KX, 300*KY, j.girl.width/2);
         btnDown = new JojButton(700*KX, 0*KY, 300*KX, 100*KY, 750*KX, j.imgArrowDown);
         btnGoCave = new JojButton(860 * KX, 600 * KY, 280 * KX, 400 * KY, 900*KX);
+
+        // кнопка разговор с водяным
+        btnTalkFrog = new JojButton(1322*KX, 474*KY, 338*KX, 245*KY, SCR_WIDTH/2f);
 
         // создаём артефакты, которые будут на этом уровне
         j.artefacts[TREE1] = new Artefact(TREE1, 1363*KX, 123*KY, 270*KX, 105*KY, SWAMP, 800*KX, 322*KY, 300*KX, 340*KY, SWAMP, 800*KX, 310*KY, j);
@@ -43,8 +63,25 @@ public class ScreenSwamp implements Screen {
             j.touch.set((float)Gdx.input.getX(), (float)Gdx.input.getY(), 0);
             j.camera.unproject(j.touch);
 
-            //if (btnGoForrestL.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnGoForrestL.girlWannaPlaceX);
-            //if (btnGoForrestR.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnGoForrestR.girlWannaPlaceX);
+            if(isDialogFrog1){
+                if(++nDial == dialogFrog1.size()) isDialogFrog1 = false;
+                return;
+            }
+            if(isDialogFrog2){
+                if(++nDial == dialogFrog2.size()) isDialogFrog2 = false;
+                return;
+            }
+            if (btnTalkFrog.hit(j.touch.x, j.touch.y) && !j.artefacts[ROPE].isReleased) {
+                j.girl.goToPlace(SCR_WIDTH/2f);
+                isDialogFrog1 = true;
+                nDial = 0;
+            }
+            if (btnTalkFrog.hit(j.touch.x, j.touch.y) && j.artefacts[ROPE].isReleased) {
+                j.girl.goToPlace(SCR_WIDTH/2f);
+                isDialogFrog2 = true;
+                nDial = 0;
+            }
+
             if(j.artefacts[ROPE].isReleased) if (btnGoCave.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnGoCave.girlWannaPlaceX);
             boolean flag = true;
             for (int i = 0; i < j.basket.artefacts.size(); i++){
@@ -116,6 +153,10 @@ public class ScreenSwamp implements Screen {
 
         // девочка
         j.batch.draw(j.imgGirl[j.girl.faza], j.girl.x - j.girl.width / 2, j.girl.y, j.girl.width / 2, 0, j.girl.width, j.girl.height, j.girl.goLeft ? 1 : -1, 1, 0);
+
+        // диалоги
+        if(isDialogFrog1) j.fontGame.draw(j.batch, dialogFrog1.get(nDial).words, dialogFrog1.get(nDial).x, dialogFrog1.get(nDial).y);
+        if(isDialogFrog2) j.fontGame.draw(j.batch, dialogFrog2.get(nDial).words, dialogFrog2.get(nDial).x, dialogFrog2.get(nDial).y);
 
         // корзина
         if (j.basket.isOpen) {

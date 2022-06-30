@@ -8,6 +8,7 @@ import static ru.myitschool.jarofjam.JarOfJam.JAROFJAM;
 import static ru.myitschool.jarofjam.JarOfJam.KX;
 import static ru.myitschool.jarofjam.JarOfJam.KY;
 import static ru.myitschool.jarofjam.JarOfJam.RASPBERRY;
+import static ru.myitschool.jarofjam.JarOfJam.ROPE;
 import static ru.myitschool.jarofjam.JarOfJam.SCR_HEIGHT;
 import static ru.myitschool.jarofjam.JarOfJam.SCR_WIDTH;
 import static ru.myitschool.jarofjam.JarOfJam.SWAMP;
@@ -18,12 +19,22 @@ import static ru.myitschool.jarofjam.JarOfJam.quest_RIDERS;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
+
+import java.util.ArrayList;
 
 public class ScreenCave implements Screen {
     final JarOfJam j;
     JojButton btnDown, btnKattle;
+    JojButton btnTalkLeshiy;
     Texture imgBG, imgLeshiy, imgKattle;
+
+    // диалоги
+    boolean isDialogLeshiy1, isDialogLeshiy2;
+    int nDial;
+    ArrayList<Dialog> dialogLeshiy1 = new ArrayList<>();
+    ArrayList<Dialog> dialogLeshiy2 = new ArrayList<>();
 
     ScreenCave(JarOfJam j) {
         this.j = j;
@@ -32,10 +43,20 @@ public class ScreenCave implements Screen {
         imgLeshiy = new Texture("leshiy.png");
         imgKattle = new Texture("kattle.png");
 
+        // загрузка диалогов
+        FileHandle file = Gdx.files.internal("text/dialogLeshiy1.txt");
+        String[] s = file.readString("UTF-8").split("#");
+        for (int i = 0, k=0; i < s.length/3; i++) dialogLeshiy1.add(new Dialog(s[k++], Integer.parseInt(s[k++]), Integer.parseInt(s[k++])));
+        file = Gdx.files.internal("text/dialogLeshiy2.txt");
+        s = file.readString("UTF-8").split("#");
+        for (int i = 0, k=0; i < s.length/3; i++) dialogLeshiy2.add(new Dialog(s[k++], Integer.parseInt(s[k++]), Integer.parseInt(s[k++])));
+
         // кнопка стрелка вниз
         btnDown = new JojButton(950*KX, 0*KY, 300*KX, 100*KY, 1000*KX, j.imgArrowDown);
         // кнопка котёл
         btnKattle = new JojButton(600*KX, 200*KY, 326*KX, 363*KY, 750*KX);
+        // кнопка разговор с водяным
+        btnTalkLeshiy = new JojButton(1200*KX, 200*KY, 345*KX, 628*KY, SCR_WIDTH/2f);
         // создаём артефакты, которые будут на этом уровне
     }
 
@@ -50,6 +71,25 @@ public class ScreenCave implements Screen {
         if(Gdx.input.justTouched()){
             j.touch.set((float)Gdx.input.getX(), (float)Gdx.input.getY(), 0);
             j.camera.unproject(j.touch);
+
+            if(isDialogLeshiy1){
+                if(++nDial == dialogLeshiy1.size()) isDialogLeshiy1 = false;
+                return;
+            }
+            if(isDialogLeshiy2){
+                if(++nDial == dialogLeshiy2.size()) isDialogLeshiy2 = false;
+                return;
+            }
+            if (btnTalkLeshiy.hit(j.touch.x, j.touch.y) && !j.artefacts[JAROFJAM].isReleased) {
+                j.girl.goToPlace(SCR_WIDTH/2f);
+                isDialogLeshiy1 = true;
+                nDial = 0;
+            }
+            if (btnTalkLeshiy.hit(j.touch.x, j.touch.y) && j.artefacts[JAROFJAM].isReleased) {
+                j.girl.goToPlace(SCR_WIDTH/2f);
+                isDialogLeshiy2 = true;
+                nDial = 0;
+            }
 
             if (btnDown.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnDown.girlWannaPlaceX);
             if (btnKattle.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnKattle.girlWannaPlaceX);
@@ -92,6 +132,10 @@ public class ScreenCave implements Screen {
 
         // девочка
         j.batch.draw(j.imgGirl[j.girl.faza], j.girl.x - j.girl.width / 2, j.girl.y, j.girl.width / 2, 0, j.girl.width, j.girl.height, j.girl.goLeft ? 1 : -1, 1, 0);
+
+        // диалоги
+        if(isDialogLeshiy1) j.fontGame.draw(j.batch, dialogLeshiy1.get(nDial).words, dialogLeshiy1.get(nDial).x, dialogLeshiy1.get(nDial).y);
+        if(isDialogLeshiy2) j.fontGame.draw(j.batch, dialogLeshiy2.get(nDial).words, dialogLeshiy2.get(nDial).x, dialogLeshiy2.get(nDial).y);
 
         // корзина
         if (j.basket.isOpen) {

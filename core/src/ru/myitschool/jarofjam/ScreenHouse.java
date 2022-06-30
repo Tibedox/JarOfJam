@@ -172,10 +172,6 @@ public class ScreenHouse implements Screen {
             j.setScreen(j.screenChulan);
         }
         // если девочка дошла до артефакта, то он попадает в корзину
-        /*if(j.artefacts[HONEY].hit(j.girl.x) && j.girl.artefact == j.artefacts[HONEY] && !j.artefacts[HONEY].inBasket) {
-            j.basket.addArtefact(j.artefacts[HONEY]);
-            j.girl.artefact = null;
-        }*/
         if(j.artefacts[SUGAR].hit(j.girl.x) && j.girl.artefact == j.artefacts[SUGAR] && !j.artefacts[SUGAR].inBasket) {
             j.basket.addArtefact(j.artefacts[SUGAR]);
             j.girl.artefact = null;
