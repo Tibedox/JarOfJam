@@ -10,7 +10,7 @@ public class ScreenForrest implements Screen {
     final JarOfJam j;
     JojButton btnRight, btnRemoveStone, btnGoSwamp;
     Texture imgBG;
-    Texture imgRock, imgBear;
+    Texture imgRock, imgBear, imgPlantains;
 
     ScreenForrest(JarOfJam j) {
         this.j = j;
@@ -18,6 +18,7 @@ public class ScreenForrest implements Screen {
         imgBG = new Texture("screens/forrest.jpg");
         imgBear = new Texture("bear.png");
         imgRock = new Texture("rock.png");
+        imgPlantains = new Texture("plantains.png");
 
         // кнопка переход в FIELD
         // кнопки стрелки
@@ -27,8 +28,7 @@ public class ScreenForrest implements Screen {
         btnGoSwamp = new JojButton(160 * KX, 270 * KY, 280 * KX, 400 * KY, 200*KX);
 
         // создаём артефакты, которые будут на этом уровне
-  /*  j.artefacts[STRAWBERRY] = new Artefact(STRAWBERRY, 863*KX, 183*KY, 150*KX, 150*KY, FIELD,
-            1660*KX, 625*KY, 150*KX, 115*KY, HOUSE, 1660*KX, 600*KY, j.imgStrawberry, j.basket);*/
+        j.artefacts[PLANTAIN] = new Artefact(PLANTAIN, 1450*KX, 278*KY, 97*KX, 106*KY, FORREST, 1000*KX, 660*KY, 500*KX, 176*KY, HOUSE, -1660*KX, 0*KY, j);
     }
 
     @Override
@@ -62,11 +62,18 @@ public class ScreenForrest implements Screen {
         // идём на экран SWAMP
         if(quest_STONE) {
             if (j.girl.wannaPlaceX == btnGoSwamp.girlWannaPlaceX && j.girl.came(j.girl.wannaPlaceX)) {
-                j.girl.x = SCR_WIDTH / 2;
-                j.girl.goToPlace(SCR_WIDTH / 2);
+                j.girl.x = SCR_WIDTH / 2f;
+                j.girl.goToPlace(SCR_WIDTH / 2f);
                 j.setScreen(j.screenSwamp);
             }
         }
+
+        // если девочка дошла до артефакта, то он попадает в корзину
+        if(quest_CORONA)
+            if(j.artefacts[PLANTAIN].hit(j.girl.x) && j.girl.artefact == j.artefacts[PLANTAIN] && !j.artefacts[PLANTAIN].inBasket) {
+                j.basket.addArtefact(j.artefacts[PLANTAIN]);
+                j.girl.artefact = null;
+            }
 
         // если девочка дошла до места, куда положить артефакт, то он пропадает из корзины
         if(j.artefacts[HONEY].isReleased) {
@@ -75,9 +82,12 @@ public class ScreenForrest implements Screen {
                     j.basket.removeArtefact(j.artefacts[i]);
                     j.girl.artefact = null;
                     quest_FRAGMENT = true;
-                    for (int k = FRAGMENT1; k <= FRAGMENT4; k++)
-                        if(!j.artefacts[k].isReleased) quest_FRAGMENT = false;
-
+                    for (int k = FRAGMENT1; k <= FRAGMENT4; k++) {
+                        if (!j.artefacts[k].isReleased) {
+                            quest_FRAGMENT = false;
+                            break;
+                        }
+                    }
                 }
             }
         }
@@ -91,7 +101,7 @@ public class ScreenForrest implements Screen {
         j.batch.setProjectionMatrix(j.camera.combined);
         j.batch.begin();
         j.batch.draw(imgBG, 0, 0, SCR_WIDTH, SCR_HEIGHT);
-
+        j.batch.draw(imgPlantains, 1425*KX, 235*KY, 208*KX, 120*KY);
         if(!quest_STONE) j.batch.draw(imgRock, 200*KX, 232*KY, 253*KX, 341*KY);
         if(!j.artefacts[HONEY].isReleased) j.batch.draw(imgBear, 400*KX, 180*KY, 522*KX, 384*KY);
 

@@ -4,6 +4,7 @@ import static ru.myitschool.jarofjam.JarOfJam.*;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 
 public class ScreenHouse implements Screen {
@@ -51,6 +52,10 @@ public class ScreenHouse implements Screen {
         imgSpider = new Texture("spider.png");
         imgWindow = new Texture("window.jpg");
 
+        FileHandle file = Gdx.files.internal("text/dialog.txt");
+        String text = file.readString();
+        System.out.print(text);
+
         // кнопки стрелки
         btnLeft = new JojButton(0, 200*KY, 100*KX, 300*KY, j.girl.width/2, j.imgArrowLeft);
         btnRight = new JojButton(SCR_WIDTH-100*KX, 200*KY, 100*KX, 300*KY, SCR_WIDTH-j.girl.width/2, j.imgArrowRight);
@@ -78,6 +83,10 @@ public class ScreenHouse implements Screen {
             j.touch.set((float)Gdx.input.getX(), (float)Gdx.input.getY(), 0);
             j.camera.unproject(j.touch);
 
+            if(quest_GAMEOVER){
+                j.setScreen(j.screenEnd);
+            }
+
             if(isDialog){
                 if(++nDial == dialog.length) isDialog = false;
                 return;
@@ -94,7 +103,7 @@ public class ScreenHouse implements Screen {
                 nDial = 0;
             }
             if (btnTalkGrandma.hit(j.touch.x, j.touch.y)) {
-                j.girl.goToPlace(SCR_WIDTH/2);
+                j.girl.goToPlace(SCR_WIDTH/2f);
                 isDialog = true;
                 nDial = 0;
             }
@@ -173,13 +182,32 @@ public class ScreenHouse implements Screen {
                 j.basket.removeArtefact(j.artefacts[STRAWBERRY]);
                 j.girl.artefact = null;
             }
-        }
 
-       /* if(j.artefacts[STRAWBERRY].hitFinish(j.girl.x) && j.girl.artefact == j.artefacts[STRAWBERRY] && j.artefacts[STRAWBERRY].inBasket) {
-            QUEST_STRAWBERRY = true;
-            j.basket.removeArtefact(j.artefacts[STRAWBERRY]);
+        }
+        if (j.artefacts[ASTRAZENECA].hitFinish(j.girl.x) && j.girl.artefact == j.artefacts[ASTRAZENECA] && j.artefacts[ASTRAZENECA].inBasket) {
+            j.basket.removeArtefact(j.artefacts[ASTRAZENECA]);
             j.girl.artefact = null;
-        }*/
+        }
+        if (j.artefacts[CORONAVAC].hitFinish(j.girl.x) && j.girl.artefact == j.artefacts[CORONAVAC] && j.artefacts[CORONAVAC].inBasket) {
+            j.basket.removeArtefact(j.artefacts[CORONAVAC]);
+            j.girl.artefact = null;
+        }
+        if (j.artefacts[PFIZER].hitFinish(j.girl.x) && j.girl.artefact == j.artefacts[PFIZER] && j.artefacts[PFIZER].inBasket) {
+            j.basket.removeArtefact(j.artefacts[PFIZER]);
+            j.girl.artefact = null;
+        }
+        if (j.artefacts[SPUTNIKV].hitFinish(j.girl.x) && j.girl.artefact == j.artefacts[SPUTNIKV] && j.artefacts[SPUTNIKV].inBasket) {
+            j.basket.removeArtefact(j.artefacts[SPUTNIKV]);
+            j.girl.artefact = null;
+        }
+        if(j.artefacts[SPUTNIKV].isReleased && j.artefacts[PFIZER].isReleased && j.artefacts[CORONAVAC].isReleased && j.artefacts[ASTRAZENECA].isReleased)
+            quest_CORONA = true;
+        if(quest_CORONA)
+            if (j.artefacts[PLANTAIN].hitFinish(j.girl.x) && j.girl.artefact == j.artefacts[PLANTAIN] && j.artefacts[PLANTAIN].inBasket) {
+                j.basket.removeArtefact(j.artefacts[PLANTAIN]);
+                j.girl.artefact = null;
+                quest_GAMEOVER = true;
+            }
 
         // отрисовка
         j.camera.update();

@@ -21,15 +21,16 @@ public class JarOfJam extends Game {
     // артефакты
     public static final int HONEY = 0, TREE1 = 1, TREE2 = 2, TREE3 = 3, TREE4 = 4,TREE5 = 5, ROPE = 6;
     public static final int KEY = 7, JUGWATER = 8, SUGAR = 9, FRAGMENT1 = 10, FRAGMENT2 = 11, FRAGMENT3 = 12, FRAGMENT4 = 13;
-    public static final int JAROFJAM = 14, POT = 15, MATCHES = 16, STRAWBERRY = 17, RASPBERRY = 18, ROPE2 = 19;
+    public static final int JAROFJAM = 14, POT = 15, MATCHES = 16, STRAWBERRY = 17, RASPBERRY = 18;
+    public static final int ASTRAZENECA = 19, CORONAVAC = 20, PFIZER = 21, SPUTNIKV = 22, PLANTAIN = 23;
 
-    public static final int N_ARTEFACTS = 20;
+    public static final int N_ARTEFACTS = 24;
     // экраны
     public static final int MENU = 0, HOUSE = 1, FIELD = 2, FORREST = 3, SWAMP = 4, CHULAN = 5;
-    public static final int INTRO = 6, GARDEN = 7, CAVE = 8, RIDERS = 9;
+    public static final int INTRO = 6, GARDEN = 7, CAVE = 8, RIDERS = 9, END = 10;
     public static int current_SCREEN, previous_SCREEN = HOUSE; // активный экран
     // задания
-    public static boolean quest_JAM, quest_ROPE, quest_FRAGMENT, quest_STONE, quest_BRIDGE, quest_RIDERS;
+    public static boolean quest_JAM, quest_ROPE, quest_FRAGMENT, quest_STONE, quest_CORONA, quest_RIDERS, quest_GAMEOVER;
 
     SpriteBatch batch;
     OrthographicCamera camera;
@@ -48,6 +49,7 @@ public class JarOfJam extends Game {
     ScreenSwamp screenSwamp;
     ScreenCave screenCave;
     ScreenRiders screenRiders;
+    ScreenEnd screenEnd;
 
     Texture imgBasket;
     Texture imgAtlasGirl;
@@ -81,7 +83,6 @@ public class JarOfJam extends Game {
         imgArt[HONEY] = new Texture("artefacts/honey.png");
         for (int i = TREE1, j=1; i <= TREE5; i++, j++) imgArt[i] = new Texture("artefacts/tree"+j+".png");
         imgArt[ROPE] = new Texture("artefacts/rope.png");
-        imgArt[ROPE2] = new Texture("artefacts/rope2.png");
         imgArt[KEY] = new Texture("artefacts/key.png");
         imgArt[MATCHES] = new Texture("artefacts/matches.png");
         imgArt[JUGWATER] = new Texture("artefacts/jugwater.png");
@@ -91,6 +92,11 @@ public class JarOfJam extends Game {
         for (int i = FRAGMENT1, j=1; i <= FRAGMENT4; i++, j++) imgArt[i] = new Texture("artefacts/fragment"+j+".png");
         imgArt[JAROFJAM] = new Texture("artefacts/emptyjar.png");
         imgArt[POT] = new Texture("artefacts/pot.png");
+        imgArt[ASTRAZENECA] = new Texture("artefacts/astrazeneca.png");
+        imgArt[CORONAVAC] = new Texture("artefacts/coronavac.png");
+        imgArt[PFIZER] = new Texture("artefacts/pfizer.png");
+        imgArt[SPUTNIKV] = new Texture("artefacts/sputnikv.png");
+        imgArt[PLANTAIN] = new Texture("artefacts/plantain.png");
 
         imgPanel = new Texture("inventory.png");
 
@@ -112,9 +118,10 @@ public class JarOfJam extends Game {
         this.screenSwamp = new ScreenSwamp(this);
         this.screenCave = new ScreenCave(this);
         this.screenRiders = new ScreenRiders(this);
+        this.screenEnd = new ScreenEnd(this);
         btnGoMenu = new JojButton(SCR_WIDTH-60*KX, SCR_HEIGHT-60*KY, 50*KX, 50*KY, 0); // кнопка выход в менею
-        //this.setScreen(this.screenSwamp);
-        this.setScreen(this.screenMenu);
+
+        this.setScreen(this.screenHouse);
     }
 
     void generateFonts(){
@@ -136,7 +143,7 @@ public class JarOfJam extends Game {
 
         parameter.size = (int)(40*KX);
         parameter.borderWidth = 2;
-        parameter.color = Color.CHARTREUSE;
+        parameter.color = Color.GOLD;
         parameter.borderColor = Color.DARK_GRAY;
         fontGame = generator.generateFont(parameter);
         generator.dispose();
@@ -150,7 +157,7 @@ public class JarOfJam extends Game {
         prefs.putBoolean("quest_ROPE", quest_ROPE);
         prefs.putBoolean("quest_FRAGMENT", quest_FRAGMENT);
         prefs.putBoolean("quest_STONE", quest_STONE);
-        prefs.putBoolean("quest_BRIDGE", quest_BRIDGE);
+        prefs.putBoolean("quest_CORONA", quest_CORONA);
         prefs.putBoolean("quest_RIDERS", quest_RIDERS);
         prefs.putFloat("girl.x", girl.x);
         prefs.putFloat("girl.y", girl.y);
@@ -172,11 +179,11 @@ public class JarOfJam extends Game {
         Preferences prefs = Gdx.app.getPreferences("jar_of_jam_preferences"); // заводим preferences
         if(prefs.contains("current_SCREEN")) current_SCREEN = prefs.getInteger("current_SCREEN", current_SCREEN);
         if(prefs.contains("previous_SCREEN")) previous_SCREEN = prefs.getInteger("previous_SCREEN", previous_SCREEN);
-        if(prefs.contains("quest_JAM")) quest_JAM = prefs.getBoolean("quest_KEY", quest_JAM);
+        if(prefs.contains("quest_JAM")) quest_JAM = prefs.getBoolean("quest_JAM", quest_JAM);
         if(prefs.contains("quest_ROPE")) quest_ROPE = prefs.getBoolean("quest_ROPE", quest_ROPE);
         if(prefs.contains("quest_FRAGMENT")) quest_FRAGMENT = prefs.getBoolean("quest_FRAGMENT", quest_FRAGMENT);
         if(prefs.contains("quest_STONE")) quest_STONE = prefs.getBoolean("quest_STONE", quest_STONE);
-        if(prefs.contains("quest_BRIDGE")) quest_BRIDGE = prefs.getBoolean("quest_BRIDGE", quest_BRIDGE);
+        if(prefs.contains("quest_CORONA")) quest_CORONA = prefs.getBoolean("quest_BRIDGE", quest_CORONA);
         if(prefs.contains("quest_RIDERS")) quest_RIDERS = prefs.getBoolean("quest_RIDERS", quest_RIDERS);
         if(prefs.contains("girl.x")) girl.x = prefs.getFloat("girl.x", girl.x);
         if(prefs.contains("girl.y")) girl.y = prefs.getFloat("girl.y", girl.y);
@@ -194,6 +201,8 @@ public class JarOfJam extends Game {
                 if(artefacts[i].inBasket) basket.addArtefact(artefacts[artefacts[i].name]); // складываем артефакт в корзину
             }
             if(prefs.contains("art"+i+"isReleased")) artefacts[i].isReleased = prefs.getBoolean("art"+i+"isReleased", artefacts[i].isReleased);
+            if(artefacts[ROPE].isReleased) imgArt[ROPE] = new Texture("artefacts/rope2.png");
+            if(quest_JAM) imgArt[JAROFJAM] = new Texture("artefacts/jarofjam.png");
         }
     }
 

@@ -1,12 +1,17 @@
 package ru.myitschool.jarofjam;
 
+import static ru.myitschool.jarofjam.JarOfJam.ASTRAZENECA;
+import static ru.myitschool.jarofjam.JarOfJam.CORONAVAC;
 import static ru.myitschool.jarofjam.JarOfJam.FIELD;
 import static ru.myitschool.jarofjam.JarOfJam.HOUSE;
 import static ru.myitschool.jarofjam.JarOfJam.KX;
 import static ru.myitschool.jarofjam.JarOfJam.KY;
+import static ru.myitschool.jarofjam.JarOfJam.PFIZER;
 import static ru.myitschool.jarofjam.JarOfJam.RASPBERRY;
+import static ru.myitschool.jarofjam.JarOfJam.RIDERS;
 import static ru.myitschool.jarofjam.JarOfJam.SCR_HEIGHT;
 import static ru.myitschool.jarofjam.JarOfJam.SCR_WIDTH;
+import static ru.myitschool.jarofjam.JarOfJam.SPUTNIKV;
 import static ru.myitschool.jarofjam.JarOfJam.SWAMP;
 import static ru.myitschool.jarofjam.JarOfJam.TREE5;
 import static ru.myitschool.jarofjam.JarOfJam.current_SCREEN;
@@ -17,28 +22,28 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class ScreenRiders implements Screen {
     final JarOfJam j;
-    JojButton btnLeft, btnRight;
-    Texture imgBG, imgBush;
+    JojButton btnDown;
+    Texture imgBG;
 
     ScreenRiders (JarOfJam j) {
         this.j = j;
 
         imgBG = new Texture("screens/riders.jpg");
-        imgBush = new Texture("bush.png");
 
-        // кнопки переход в сад и в лес
-        // кнопки стрелки
-        btnLeft = new JojButton(0, 200*KY, 100*KX, 300*KY, j.girl.width/2, j.imgArrowLeft);
-        btnRight = new JojButton(SCR_WIDTH-100*KX, 200*KY, 100*KX, 300*KY, SCR_WIDTH-j.girl.width/2, j.imgArrowRight);
+        // кнопка стрелка вниз
+        btnDown = new JojButton(850*KX, 0*KY, 300*KX, 100*KY, 1000*KX, j.imgArrowDown);
 
         // создаём артефакты, которые будут на этом уровне
-        j.artefacts[RASPBERRY] = new Artefact(RASPBERRY, 568*KX, 176*KY, 200*KX, 150*KY, FIELD, 1660*KX, 625*KY, 150*KX, 115*KY, HOUSE, -1660*KX, 0*KY, j);
-        j.artefacts[TREE5] = new Artefact(TREE5, 963*KX, 120*KY, 163*KX, 51*KY, FIELD, 800*KX, 322*KY, 300*KX, 340*KY, SWAMP, 880*KX, 620*KY, j);
+        j.artefacts[ASTRAZENECA] = new Artefact(ASTRAZENECA, 300*KX, 176*KY, 150*KX, 350*KY, RIDERS, 1000*KX, 660*KY, 500*KX, 176*KY, HOUSE, -1660*KX, 0*KY, j);
+        j.artefacts[CORONAVAC] = new Artefact(CORONAVAC, 700*KX, 176*KY, 150*KX, 350*KY, RIDERS, 1000*KX, 660*KY, 500*KX, 176*KY, HOUSE, -1660*KX, 0*KY, j);
+        j.artefacts[PFIZER] = new Artefact(PFIZER, 1200*KX, 176*KY, 150*KX, 350*KY, RIDERS, 1000*KX, 660*KY, 500*KX, 176*KY, HOUSE, -1660*KX, 0*KY, j);
+        j.artefacts[SPUTNIKV] = new Artefact(SPUTNIKV, 1600*KX, 176*KY, 150*KX, 350*KY, RIDERS, 1000*KX, 660*KY, 500*KX, 176*KY, HOUSE, -1660*KX, 0*KY, j);
+
     }
 
     @Override
     public void show() {
-        current_SCREEN = FIELD;
+        current_SCREEN = RIDERS;
     }
 
     @Override
@@ -48,30 +53,32 @@ public class ScreenRiders implements Screen {
             j.touch.set((float)Gdx.input.getX(), (float)Gdx.input.getY(), 0);
             j.camera.unproject(j.touch);
 
-            if (btnLeft.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnLeft.girlWannaPlaceX);
-            if (btnRight.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnRight.girlWannaPlaceX);
+            if (btnDown.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnDown.girlWannaPlaceX);
         }
 
         // игровые события
         j.girl.move();
-        // идём на экран HOME
-        if(j.girl.wannaPlaceX == btnRight.girlWannaPlaceX && j.girl.x == j.girl.wannaPlaceX) {
+        // идём на экран CHULAN
+        if(j.girl.wannaPlaceX == btnDown.girlWannaPlaceX && j.girl.x == j.girl.wannaPlaceX) {
             j.girl.setX(j.girl.width/2);
-            j.setScreen(j.screenGarden);
-        }
-        // идём на экран FORREST
-        if(j.girl.wannaPlaceX == btnLeft.girlWannaPlaceX && j.girl.x == j.girl.wannaPlaceX) {
-            j.girl.setX(SCR_WIDTH-j.girl.width/2);
-            j.setScreen(j.screenForrest);
+            j.setScreen(j.screenChulan);
         }
 
         // если девочка дошла до артефакта, то он попадает в корзину
-        if(j.artefacts[RASPBERRY].hit(j.girl.x) && j.girl.artefact == j.artefacts[RASPBERRY] && !j.artefacts[RASPBERRY].inBasket) {
-            j.basket.addArtefact(j.artefacts[RASPBERRY]);
+        if(j.artefacts[ASTRAZENECA].hit(j.girl.x) && j.girl.artefact == j.artefacts[ASTRAZENECA] && !j.artefacts[ASTRAZENECA].inBasket) {
+            j.basket.addArtefact(j.artefacts[ASTRAZENECA]);
             j.girl.artefact = null;
         }
-        if(j.artefacts[TREE5].hit(j.girl.x) && j.girl.artefact == j.artefacts[TREE5] && !j.artefacts[TREE5].inBasket) {
-            j.basket.addArtefact(j.artefacts[TREE5]);
+        if(j.artefacts[CORONAVAC].hit(j.girl.x) && j.girl.artefact == j.artefacts[CORONAVAC] && !j.artefacts[CORONAVAC].inBasket) {
+            j.basket.addArtefact(j.artefacts[CORONAVAC]);
+            j.girl.artefact = null;
+        }
+        if(j.artefacts[PFIZER].hit(j.girl.x) && j.girl.artefact == j.artefacts[PFIZER] && !j.artefacts[PFIZER].inBasket) {
+            j.basket.addArtefact(j.artefacts[PFIZER]);
+            j.girl.artefact = null;
+        }
+        if(j.artefacts[SPUTNIKV].hit(j.girl.x) && j.girl.artefact == j.artefacts[SPUTNIKV] && !j.artefacts[SPUTNIKV].inBasket) {
+            j.basket.addArtefact(j.artefacts[SPUTNIKV]);
             j.girl.artefact = null;
         }
 
@@ -89,8 +96,6 @@ public class ScreenRiders implements Screen {
         // девочка
         j.batch.draw(j.imgGirl[j.girl.faza], j.girl.x - j.girl.width / 2, j.girl.y, j.girl.width / 2, 0, j.girl.width, j.girl.height, j.girl.goLeft ? 1 : -1, 1, 0);
 
-        j.batch.draw(imgBush, 0, 0, SCR_WIDTH, 200*KY);
-
         // корзина
         if (j.basket.isOpen) {
             j.batch.draw(j.imgPanel, 50 * KX, 20 * KY, SCR_WIDTH - 70 * KX, 100 * KY);
@@ -99,8 +104,7 @@ public class ScreenRiders implements Screen {
         }
         j.batch.draw(j.imgBasket, j.basket.x, j.basket.y, j.basket.width, j.basket.height); // сама корзинка
         j.batch.draw(j.imgCross, j.btnGoMenu.x, j.btnGoMenu.y, j.btnGoMenu.width, j.btnGoMenu.height); // выход в главное меню
-        j.batch.draw(btnLeft.img, btnLeft.x, btnLeft.y, btnLeft.width, btnLeft.height); // стрелка влево
-        j.batch.draw(btnRight.img, btnRight.x, btnRight.y, btnRight.width, btnRight.height); // стрелка вправо
+        j.batch.draw(btnDown.img, btnDown.x, btnDown.y, btnDown.width, btnDown.height); // стрелка вниз
 
         j.batch.end();
     }

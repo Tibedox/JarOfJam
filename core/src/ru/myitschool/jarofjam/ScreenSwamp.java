@@ -45,7 +45,7 @@ public class ScreenSwamp implements Screen {
 
             //if (btnGoForrestL.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnGoForrestL.girlWannaPlaceX);
             //if (btnGoForrestR.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnGoForrestR.girlWannaPlaceX);
-            if(quest_BRIDGE) if (btnGoCave.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnGoCave.girlWannaPlaceX);
+            if(j.artefacts[ROPE].isReleased) if (btnGoCave.hit(j.touch.x, j.touch.y)) j.girl.goToPlace(btnGoCave.girlWannaPlaceX);
             boolean flag = true;
             for (int i = 0; i < j.basket.artefacts.size(); i++){
                 if(j.basket.artefacts.get(i).isMove) {
@@ -58,12 +58,16 @@ public class ScreenSwamp implements Screen {
 
         // игровые события
         j.girl.move();
-        // идём на экран FORREST
-        /*if(j.girl.wannaPlaceX == btnGoForrestL.girlWannaPlaceX && j.girl.x == j.girl.wannaPlaceX ||
-                j.girl.wannaPlaceX == btnGoForrestR.girlWannaPlaceX && j.girl.x == j.girl.wannaPlaceX) {
-            j.girl.setX(SCR_WIDTH/2);
-            j.setScreen(j.screenForrest);
-        }*/
+
+        // идём на экран CAVE
+        if(j.artefacts[ROPE].isReleased) {
+            if (j.girl.wannaPlaceX == btnGoCave.girlWannaPlaceX && j.girl.came(j.girl.wannaPlaceX)) {
+                j.girl.setX(SCR_WIDTH/2f);
+                j.setScreen(j.screenCave);
+                System.out.println("zzz");
+            }
+        }
+
         if(j.girl.wannaPlaceX == btnDown.girlWannaPlaceX && j.girl.came(j.girl.wannaPlaceX)) {
             j.girl.setX(SCR_WIDTH/2f);
             j.setScreen(j.screenForrest);
@@ -92,9 +96,9 @@ public class ScreenSwamp implements Screen {
             if (j.artefacts[ROPE].hitFinish(j.girl.x) && j.girl.artefact == j.artefacts[ROPE] && j.artefacts[ROPE].inBasket) {
                 j.basket.removeArtefact(j.artefacts[ROPE]);
                 j.girl.artefact = null;
-                j.imgArt[ROPE] = j.imgArt[ROPE2];
-                j.artefacts[ROPE].width = 244;
-                j.artefacts[ROPE].height = 361;
+                j.imgArt[ROPE] = new Texture("artefacts/rope2.png");
+                j.artefacts[ROPE].width = 244*KX;
+                j.artefacts[ROPE].height = 361*KY;
             }
         }
 
