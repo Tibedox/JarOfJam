@@ -7,6 +7,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class ScreenHouse implements Screen {
     final JarOfJam j;
 
@@ -20,26 +23,19 @@ public class ScreenHouse implements Screen {
 
     JojButton btnLeft, btnRight;
     JojButton btnWindow;
-    JojButton btnTalkGrandma;
+    JojButton btnTalkGrandma, btnTalkSpider;
 
-    boolean isDialog;
+    // диалоги
+    boolean isDialogGrandma1, isDialogGrandma2, isDialogGrandma3, isDialogSpider1, isDialogSpider2;
     int nDial;
-    Dialog[] dialog = {new Dialog("- Кхе-Кхе", 900, 850),
-            new Dialog("- Как ты бабушка?", 1000, 460),
-            new Dialog("- Я немного приболела...\n Мне нужно поспать...", 900, 950),
-            new Dialog("- Хорошо, поправляйся бабуля!", 1000, 460),
-            new Dialog("- Я волнуюсь за бабушку, \nнужно найти ей какое-то лекарство.", 500, 300),
-            new Dialog("- На столе ничего нет, я не нашла лекарство,\n но есть пара вещей, может они пригодятся?", 500, 300),
-            new Dialog("- Хм, а что это там в окне?", 500, 500)
-    };
+    ArrayList<Dialog> dialogGrandma1 = new ArrayList<>();
+    ArrayList<Dialog> dialogGrandma2 = new ArrayList<>();
+    ArrayList<Dialog> dialogGrandma3 = new ArrayList<>();
+    ArrayList<Dialog> dialogOwl = new ArrayList<>();
+    ArrayList<Dialog> dialogSpider1 = new ArrayList<>();
+    ArrayList<Dialog> dialogSpider2 = new ArrayList<>();
+
     boolean isWindow;
-    Dialog[] dialog2 = {new Dialog("- Уугу-уугу, здравствуй,\nменя зовут Алконис\nи я знаю где тебе найти лекарство\nдля бабушки-и-и...", 150, 970),
-            new Dialog("- Это что человек с телом совы,\nили сова с головой человека?\nОткуда ты знаешь, что бабушка болеет?", 145, 300),
-            new Dialog("- Я все знаю, я Алконост,\nприлетела, чтобы тебе подсказать,\n как вылечить твою бабушку-y-y...", 150, 970),
-            new Dialog("- Отправляйся в дремучий лес,\nтам ты найдешь лешего...", 150, 950),
-            new Dialog("- Если выполнишь его просьбу,\nон сделает тебе лекарство!", 150, 950),
-            new Dialog("- Интересно, ей можно верить?\n Ну, выбора у меня не остается, другого лекарства нет.", 145, 220)
-    };
 
     ScreenHouse(JarOfJam j) {
         this.j = j;
@@ -52,17 +48,35 @@ public class ScreenHouse implements Screen {
         imgSpider = new Texture("spider.png");
         imgWindow = new Texture("window.jpg");
 
-        FileHandle file = Gdx.files.internal("text/dialog.txt");
-        String text = file.readString();
-        System.out.print(text);
+        // загрузка диалогов
+        FileHandle file = Gdx.files.internal("text/dialogGrandma1.txt");
+        String[] s = file.readString("UTF-8").split("#");
+        for (int i = 0, k=0; i < s.length/3; i++) dialogGrandma1.add(new Dialog(s[k++], Integer.parseInt(s[k++]), Integer.parseInt(s[k++])));
+        file = Gdx.files.internal("text/dialogGrandma2.txt");
+        s = file.readString("UTF-8").split("#");
+        for (int i = 0, k=0; i < s.length/3; i++) dialogGrandma2.add(new Dialog(s[k++], Integer.parseInt(s[k++]), Integer.parseInt(s[k++])));
+        file = Gdx.files.internal("text/dialogGrandma3.txt");
+        s = file.readString("UTF-8").split("#");
+        for (int i = 0, k=0; i < s.length/3; i++) dialogGrandma3.add(new Dialog(s[k++], Integer.parseInt(s[k++]), Integer.parseInt(s[k++])));
+        file = Gdx.files.internal("text/dialogOwl.txt");
+        s = file.readString("UTF-8").split("#");
+        for (int i = 0, k=0; i < s.length/3; i++) dialogOwl.add(new Dialog(s[k++], Integer.parseInt(s[k++]), Integer.parseInt(s[k++])));
+        file = Gdx.files.internal("text/dialogSpider1.txt");
+        s = file.readString("UTF-8").split("#");
+        for (int i = 0, k=0; i < s.length/3; i++) dialogSpider1.add(new Dialog(s[k++], Integer.parseInt(s[k++]), Integer.parseInt(s[k++])));
+        file = Gdx.files.internal("text/dialogSpider2.txt");
+        s = file.readString("UTF-8").split("#");
+        for (int i = 0, k=0; i < s.length/3; i++) dialogSpider2.add(new Dialog(s[k++], Integer.parseInt(s[k++]), Integer.parseInt(s[k++])));
 
         // кнопки стрелки
         btnLeft = new JojButton(0, 200*KY, 100*KX, 300*KY, j.girl.width/2, j.imgArrowLeft);
         btnRight = new JojButton(SCR_WIDTH-100*KX, 200*KY, 100*KX, 300*KY, SCR_WIDTH-j.girl.width/2, j.imgArrowRight);
         // кнопка окно
         btnWindow = new JojButton(167*KX, 658*KY, 463*KX, 316*KY, j.girl.width/2);
-        // кнопка разговор с бабкой
+        // кнопка разговор с бабушкой
         btnTalkGrandma = new JojButton(1000*KX, 660*KY, 500*KX, 176*KY, SCR_WIDTH/2f);
+        // кнопка разговор с пауком
+        btnTalkSpider = new JojButton(0*KX, 900*KY, 200*KX, 200*KY, SCR_WIDTH/2f);
 
         // создаём артефакты, которые будут на этом уровне
         j.artefacts[SUGAR] = new Artefact(SUGAR, 500*KX, 420*KY, 72*KX, 54*KY, HOUSE, 1660*KX, 625*KY, 150*KX, 115*KY, HOUSE, -1660*KX, 0*KY, j);
@@ -87,12 +101,28 @@ public class ScreenHouse implements Screen {
                 j.setScreen(j.screenEnd);
             }
 
-            if(isDialog){
-                if(++nDial == dialog.length) isDialog = false;
+            if(isDialogGrandma1){
+                if(++nDial == dialogGrandma1.size()) isDialogGrandma1 = false;
+                return;
+            }
+            if(isDialogGrandma2){
+                if(++nDial == dialogGrandma2.size()) isDialogGrandma2 = false;
+                return;
+            }
+            if(isDialogGrandma3){
+                if(++nDial == dialogGrandma3.size()) isDialogGrandma3 = false;
+                return;
+            }
+            if(isDialogSpider1){
+                if(++nDial == dialogSpider1.size()) isDialogSpider1 = false;
+                return;
+            }
+            if(isDialogSpider2){
+                if(++nDial == dialogSpider2.size()) isDialogSpider2 = false;
                 return;
             }
             if(isWindow){
-                if(++nDial == dialog2.length) isWindow = false;
+                if(++nDial == dialogOwl.size()) isWindow = false;
                 return;
             }
 
@@ -102,9 +132,29 @@ public class ScreenHouse implements Screen {
                 isWindow = true;
                 nDial = 0;
             }
-            if (btnTalkGrandma.hit(j.touch.x, j.touch.y)) {
+            if (btnTalkGrandma.hit(j.touch.x, j.touch.y) && !quest_JAM) {
                 j.girl.goToPlace(SCR_WIDTH/2f);
-                isDialog = true;
+                isDialogGrandma1 = true;
+                nDial = 0;
+            }
+            if (btnTalkGrandma.hit(j.touch.x, j.touch.y) && quest_JAM && !quest_CORONA) {
+                j.girl.goToPlace(SCR_WIDTH/2f);
+                isDialogGrandma2 = true;
+                nDial = 0;
+            }
+            if (btnTalkGrandma.hit(j.touch.x, j.touch.y) && quest_CORONA) {
+                j.girl.goToPlace(SCR_WIDTH/2f);
+                isDialogGrandma3 = true;
+                nDial = 0;
+            }
+            if (btnTalkSpider.hit(j.touch.x, j.touch.y) && !quest_CORONA) {
+                j.girl.goToPlace(SCR_WIDTH/2f);
+                isDialogSpider1 = true;
+                nDial = 0;
+            }
+            if (btnTalkSpider.hit(j.touch.x, j.touch.y) && quest_CORONA) {
+                j.girl.goToPlace(SCR_WIDTH/2f);
+                isDialogSpider2 = true;
                 nDial = 0;
             }
         }
@@ -230,7 +280,11 @@ public class ScreenHouse implements Screen {
         j.batch.draw(j.imgGirl[j.girl.faza], j.girl.x-j.girl.width/2, j.girl.y, j.girl.width/2, 0, j.girl.width, j.girl.height, j.girl.goLeft?1:-1, 1, 0);
 
         // диалоги
-        if(isDialog) j.fontGame.draw(j.batch, dialog[nDial].words, dialog[nDial].x, dialog[nDial].y);
+        if(isDialogGrandma1) j.fontGame.draw(j.batch, dialogGrandma1.get(nDial).words, dialogGrandma1.get(nDial).x, dialogGrandma1.get(nDial).y);
+        if(isDialogGrandma2) j.fontGame.draw(j.batch, dialogGrandma2.get(nDial).words, dialogGrandma2.get(nDial).x, dialogGrandma2.get(nDial).y);
+        if(isDialogGrandma3) j.fontGame.draw(j.batch, dialogGrandma3.get(nDial).words, dialogGrandma3.get(nDial).x, dialogGrandma3.get(nDial).y);
+        if(isDialogSpider1) j.fontGame.draw(j.batch, dialogSpider1.get(nDial).words, dialogSpider1.get(nDial).x, dialogSpider1.get(nDial).y);
+        if(isDialogSpider2) j.fontGame.draw(j.batch, dialogSpider2.get(nDial).words, dialogSpider2.get(nDial).x, dialogSpider2.get(nDial).y);
 
         // корзина
         if(j.basket.isOpen) {
@@ -246,7 +300,7 @@ public class ScreenHouse implements Screen {
         if(isWindow) {
             j.batch.draw(imgWindow, 0, 0, SCR_WIDTH, SCR_HEIGHT);
             // диалог
-            j.fontGame.draw(j.batch, dialog2[nDial].words, dialog2[nDial].x, dialog2[nDial].y);
+            j.fontGame.draw(j.batch, dialogOwl.get(nDial).words, dialogOwl.get(nDial).x, dialogOwl.get(nDial).y);
         }
 
         j.batch.end();
