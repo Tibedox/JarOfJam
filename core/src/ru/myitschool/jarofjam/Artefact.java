@@ -3,10 +3,12 @@ package ru.myitschool.jarofjam;
 import static ru.myitschool.jarofjam.JarOfJam.*;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
 
 public class Artefact {
     final JarOfJam j;
     float x, y, width, height; // параметры артефакта
+    float vx, vy;
     float fx, fy, fwidth, fheight; // параметры места, куда его надо приспособить
     float newX, newY; // координаты арта, когда его приспособили
     float outWidth, outHeight; // размеры артефакта вне корзины
@@ -40,6 +42,8 @@ public class Artefact {
         float k = width > height ? 60 * KX/width : 60*KY/height;
         basketWidth = width*k;
         basketHeight = height*k;
+        vx = MathUtils.random(2, 10);
+        vy = MathUtils.random(2, 10);
     }
 
     void drag(float x, float y){
@@ -96,5 +100,12 @@ public class Artefact {
     
     boolean hitFinish(float tx) {
         return tx > fx && tx < fx+fwidth;
+    }
+
+    void fly(){
+        x+=vx;
+        y+=vy;
+        if(x<width || x>SCR_WIDTH-width) vx = -vx;
+        if(y<height*2 || y>SCR_HEIGHT-height) vy = -vy;
     }
 }

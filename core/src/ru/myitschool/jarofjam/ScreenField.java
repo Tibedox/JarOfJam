@@ -25,7 +25,7 @@ public class ScreenField implements Screen {
 
         // создаём артефакты, которые будут на этом уровне
         j.artefacts[RASPBERRY] = new Artefact(RASPBERRY, 568*KX, 176*KY, 200*KX, 150*KY, FIELD, 1660*KX, 625*KY, 150*KX, 115*KY, HOUSE, -1660*KX, 0*KY, j);
-        j.artefacts[TREE5] = new Artefact(TREE5, 943*KX, 120*KY, 163*KX, 51*KY, FIELD, 800*KX, 322*KY, 300*KX, 340*KY, SWAMP, 880*KX, 620*KY, j);
+        j.artefacts[TREE5] = new Artefact(TREE5, -970*KX, 110*KY, 163*KX, 51*KY, FIELD, 800*KX, 322*KY, 300*KX, 340*KY, SWAMP, 880*KX, 620*KY, j);
     }
 
     @Override

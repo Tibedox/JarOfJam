@@ -122,7 +122,7 @@ public class ScreenForrest implements Screen {
             }
 
         // если девочка дошла до места, куда положить артефакт, то он пропадает из корзины
-        if(j.artefacts[HONEY].isReleased) {
+        if(j.artefacts[HONEY].isReleased && quest_BEAR) {
             for (int i = FRAGMENT1; i <= FRAGMENT4; i++) {
                 if (j.artefacts[i].hitFinish(j.girl.x) && j.girl.artefact == j.artefacts[i] && j.artefacts[i].inBasket) {
                     j.basket.removeArtefact(j.artefacts[i]);

@@ -23,15 +23,16 @@ public class JarOfJam extends Game {
     public static final int KEY = 7, JUGWATER = 8, SUGAR = 9, FRAGMENT1 = 10, FRAGMENT2 = 11, FRAGMENT3 = 12, FRAGMENT4 = 13;
     public static final int JAROFJAM = 14, POT = 15, MATCHES = 16, STRAWBERRY = 17, RASPBERRY = 18;
     public static final int ASTRAZENECA = 19, CORONAVAC = 20, PFIZER = 21, SPUTNIKV = 22, PLANTAIN = 23;
+    public static final int FLY0 = 24, FLY1 = 25, FLY2 = 26, FLY3 = 27;
 
-    public static final int N_ARTEFACTS = 24;
+    public static final int N_ARTEFACTS = 28;
     // экраны
     public static final int MENU = 0, HOUSE = 1, FIELD = 2, FORREST = 3, SWAMP = 4, CHULAN = 5;
     public static final int INTRO = 6, GARDEN = 7, CAVE = 8, RIDERS = 9, END = 10;
     public static int current_SCREEN, previous_SCREEN = HOUSE; // активный экран
     // задания
     public static boolean quest_JAM, quest_ROPE, quest_FRAGMENT, quest_STONE, quest_CORONA, quest_RIDERS;
-    public static boolean quest_BEAR, quest_GAMEOVER;
+    public static boolean quest_FLY, quest_BEAR, quest_GAMEOVER;
 
     SpriteBatch batch;
     OrthographicCamera camera;
@@ -98,6 +99,7 @@ public class JarOfJam extends Game {
         imgArt[PFIZER] = new Texture("artefacts/pfizer.png");
         imgArt[SPUTNIKV] = new Texture("artefacts/sputnikv.png");
         imgArt[PLANTAIN] = new Texture("artefacts/plantain.png");
+        for (int i = FLY0, j=0; i <= FLY3; i++, j++) imgArt[i] = new Texture("artefacts/fly"+j+".png");
 
         imgPanel = new Texture("inventory.png");
 
@@ -157,6 +159,7 @@ public class JarOfJam extends Game {
         prefs.putBoolean("quest_BEAR", quest_BEAR);
         prefs.putBoolean("quest_JAM", quest_JAM);
         prefs.putBoolean("quest_ROPE", quest_ROPE);
+        prefs.putBoolean("quest_FLY", quest_FLY);
         prefs.putBoolean("quest_FRAGMENT", quest_FRAGMENT);
         prefs.putBoolean("quest_STONE", quest_STONE);
         prefs.putBoolean("quest_CORONA", quest_CORONA);
@@ -184,6 +187,7 @@ public class JarOfJam extends Game {
         if(prefs.contains("quest_BEAR")) quest_BEAR = prefs.getBoolean("quest_BEAR", quest_BEAR);
         if(prefs.contains("quest_JAM")) quest_JAM = prefs.getBoolean("quest_JAM", quest_JAM);
         if(prefs.contains("quest_ROPE")) quest_ROPE = prefs.getBoolean("quest_ROPE", quest_ROPE);
+        if(prefs.contains("quest_FLY")) quest_FLY = prefs.getBoolean("quest_FLY", quest_FLY);
         if(prefs.contains("quest_FRAGMENT")) quest_FRAGMENT = prefs.getBoolean("quest_FRAGMENT", quest_FRAGMENT);
         if(prefs.contains("quest_STONE")) quest_STONE = prefs.getBoolean("quest_STONE", quest_STONE);
         if(prefs.contains("quest_CORONA")) quest_CORONA = prefs.getBoolean("quest_CORONA", quest_CORONA);

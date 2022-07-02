@@ -49,6 +49,11 @@ public class ScreenSwamp implements Screen {
         j.artefacts[TREE2] = new Artefact(TREE2, 200*KX, 183*KY, 254*KX, 94*KY, SWAMP, 800*KX, 322*KY, 300*KX, 340*KY, SWAMP, 818*KX, 410*KY, j);
         j.artefacts[TREE3] = new Artefact(TREE3, 800*KX, 183*KY, 233*KX, 72*KY, SWAMP, 800*KX, 322*KY, 300*KX, 340*KY, SWAMP, 835*KX, 499*KY, j);
         j.artefacts[TREE4] = new Artefact(TREE4, 663*KX, 120*KY, 197*KX, 57*KY, SWAMP, 800*KX, 322*KY, 300*KX, 340*KY, SWAMP, 860*KX, 567*KY, j);
+
+        j.artefacts[FLY0] = new Artefact(FLY0, 133*KX, 423*KY, 120*KX, 120*KY, SWAMP, 1322*KX, 474*KY, 338*KX, 245*KY, SWAMP, -800*KX, 310*KY, j);
+        j.artefacts[FLY1] = new Artefact(FLY1, 200*KX, 383*KY, 181*KX, 150*KY, SWAMP, 1322*KX, 474*KY, 338*KX, 245*KY, SWAMP, -818*KX, 410*KY, j);
+        j.artefacts[FLY2] = new Artefact(FLY2, 800*KX, 283*KY, 100*KX, 100*KY, SWAMP, 1322*KX, 474*KY, 338*KX, 245*KY, SWAMP, -835*KX, 499*KY, j);
+        j.artefacts[FLY3] = new Artefact(FLY3, 663*KX, 420*KY, 121*KX, 100*KY, SWAMP, 1322*KX, 474*KY, 338*KX, 245*KY, SWAMP, -860*KX, 567*KY, j);
     }
 
     @Override
@@ -69,14 +74,15 @@ public class ScreenSwamp implements Screen {
             }
             if(isDialogFrog2){
                 if(++nDial == dialogFrog2.size()) isDialogFrog2 = false;
+                j.artefacts[TREE5].x = 930*KX;
                 return;
             }
-            if (btnTalkFrog.hit(j.touch.x, j.touch.y) && !j.artefacts[ROPE].isReleased) {
+            if (btnTalkFrog.hit(j.touch.x, j.touch.y) && !quest_FLY) {
                 j.girl.goToPlace(SCR_WIDTH/2f);
                 isDialogFrog1 = true;
                 nDial = 0;
             }
-            if (btnTalkFrog.hit(j.touch.x, j.touch.y) && j.artefacts[ROPE].isReleased) {
+            if (btnTalkFrog.hit(j.touch.x, j.touch.y) && quest_FLY) {
                 j.girl.goToPlace(SCR_WIDTH/2f);
                 isDialogFrog2 = true;
                 nDial = 0;
@@ -101,7 +107,6 @@ public class ScreenSwamp implements Screen {
             if (j.girl.wannaPlaceX == btnGoCave.girlWannaPlaceX && j.girl.came(j.girl.wannaPlaceX)) {
                 j.girl.setX(SCR_WIDTH/2f);
                 j.setScreen(j.screenCave);
-                System.out.println("zzz");
             }
         }
 
@@ -117,6 +122,13 @@ public class ScreenSwamp implements Screen {
                 j.girl.artefact = null;
             }
         }
+        for (int i = FLY0; i <= FLY3; i++) {
+            if(j.artefacts[i].hit(j.girl.x) && j.girl.artefact == j.artefacts[i] && !j.artefacts[i].inBasket) {
+                j.basket.addArtefact(j.artefacts[i]);
+                j.girl.artefact = null;
+            }
+        }
+        for (int i = FLY0; i <= FLY3; i++) if(!(j.artefacts[i].inBasket || j.artefacts[i].isReleased)) j.artefacts[i].fly();
         // если девочка дошла до места, куда положить артефакт, то он пропадает из корзины
         for (int i = TREE1; i <= TREE5; i++) {
             if (j.artefacts[i].hitFinish(j.girl.x) && j.girl.artefact == j.artefacts[i] && j.artefacts[i].inBasket) {
@@ -124,6 +136,7 @@ public class ScreenSwamp implements Screen {
                 j.girl.artefact = null;
             }
         }
+
         boolean bridge = true;
         for (int i = TREE1; i <= TREE5; i++) if(!j.artefacts[i].isReleased) {
             bridge = false;
@@ -138,7 +151,17 @@ public class ScreenSwamp implements Screen {
                 j.artefacts[ROPE].height = 361*KY;
             }
         }
-
+        for (int i = FLY0; i <= FLY3; i++) {
+            if (j.artefacts[i].hitFinish(j.girl.x) && j.girl.artefact == j.artefacts[i] && j.artefacts[i].inBasket) {
+                j.basket.removeArtefact(j.artefacts[i]);
+                j.girl.artefact = null;
+            }
+        }
+        quest_FLY = true;
+        for (int i = FLY0; i <= FLY3; i++) if(!j.artefacts[i].isReleased) {
+            quest_FLY = false;
+            break;
+        }
         // отрисовка
         j.camera.update();
         j.batch.setProjectionMatrix(j.camera.combined);
