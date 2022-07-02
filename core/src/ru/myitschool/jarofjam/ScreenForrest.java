@@ -15,6 +15,8 @@ public class ScreenForrest implements Screen {
     JojButton btnTalkBear;
     Texture imgBG;
     Texture imgRock, imgBear, imgPlantains;
+    Texture[] imgMedved = new Texture[4];
+    Bear bear;
 
     // диалоги
     boolean isDialogBear1, isDialogBear2;
@@ -29,6 +31,8 @@ public class ScreenForrest implements Screen {
         imgBear = new Texture("bear.png");
         imgRock = new Texture("rock.png");
         imgPlantains = new Texture("plantains.png");
+        for (int i = 0; i < 4; i++) imgMedved[i] = new Texture("bear"+i+".png");
+        bear = new Bear();
 
         // загрузка диалогов
         FileHandle file = Gdx.files.internal("text/dialogBear1.txt");
@@ -138,6 +142,7 @@ public class ScreenForrest implements Screen {
             j.basket.removeArtefact(j.artefacts[HONEY]);
             j.girl.artefact = null;
         }
+        if(quest_BEAR) bear.go();
         // отрисовка
         j.camera.update();
         j.batch.setProjectionMatrix(j.camera.combined);
@@ -147,11 +152,12 @@ public class ScreenForrest implements Screen {
         if(!quest_STONE) j.batch.draw(imgRock, 200*KX, 232*KY, 253*KX, 341*KY);
         if(!quest_BEAR) j.batch.draw(imgBear, 400*KX, 180*KY, 522*KX, 384*KY);
 
+
         // артефакты не в корзине
         for (Artefact a : j.artefacts)
             if (a != null && !a.inBasket && (a.startScreen == current_SCREEN && !a.isReleased || a.finishScreen == current_SCREEN && a.isReleased))
                 j.batch.draw(j.imgArt[a.name], a.x, a.y, a.width, a.height);
-
+        if(quest_BEAR) j.batch.draw(imgMedved[bear.faza], bear.x*KX, bear.y*KY, bear.width*KX, bear.height*KY);
         // девочка
         j.batch.draw(j.imgGirl[j.girl.faza], j.girl.x - j.girl.width / 2, j.girl.y, j.girl.width / 2, 0, j.girl.width, j.girl.height, j.girl.goLeft ? 1 : -1, 1, 0);
 

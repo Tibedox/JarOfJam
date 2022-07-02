@@ -186,7 +186,7 @@ public class JarOfJam extends Game {
         if(prefs.contains("quest_ROPE")) quest_ROPE = prefs.getBoolean("quest_ROPE", quest_ROPE);
         if(prefs.contains("quest_FRAGMENT")) quest_FRAGMENT = prefs.getBoolean("quest_FRAGMENT", quest_FRAGMENT);
         if(prefs.contains("quest_STONE")) quest_STONE = prefs.getBoolean("quest_STONE", quest_STONE);
-        if(prefs.contains("quest_CORONA")) quest_CORONA = prefs.getBoolean("quest_BRIDGE", quest_CORONA);
+        if(prefs.contains("quest_CORONA")) quest_CORONA = prefs.getBoolean("quest_CORONA", quest_CORONA);
         if(prefs.contains("quest_RIDERS")) quest_RIDERS = prefs.getBoolean("quest_RIDERS", quest_RIDERS);
         if(prefs.contains("girl.x")) girl.x = prefs.getFloat("girl.x", girl.x);
         if(prefs.contains("girl.y")) girl.y = prefs.getFloat("girl.y", girl.y);

@@ -11,6 +11,7 @@ public class ScreenField implements Screen {
     JojButton btnLeft, btnRight;
     Texture imgBG, imgBush;
 
+
     ScreenField(JarOfJam j) {
         this.j = j;
 
