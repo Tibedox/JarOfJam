@@ -6,6 +6,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.ArrayList;
 
@@ -14,6 +16,11 @@ public class ScreenSwamp implements Screen {
     JojButton btnDown, btnGoCave;
     JojButton btnTalkFrog;
     Texture imgBG, imgFrog;
+    Texture imgGirlUpAtlas;
+    TextureRegion[] imgGirlUp = new TextureRegion[6];
+    boolean girlGoCave;
+    int fazaGirlGoCave;
+    long timeGirlGoCave, timeGirlGoInterval = 200;
 
     // диалоги
     boolean isDialogFrog1, isDialogFrog2;
@@ -26,6 +33,10 @@ public class ScreenSwamp implements Screen {
 
         imgBG = new Texture("screens/swamp.jpg");
         imgFrog = new Texture("frog.png");
+        imgGirlUpAtlas = new Texture("moveup.png");
+        for (int i = 0; i < imgGirlUp.length; i++) {
+            imgGirlUp[i] = new TextureRegion(imgGirlUpAtlas, i*150, 0, 150 ,300);
+        }
 
         // загрузка диалогов
         FileHandle file = Gdx.files.internal("text/dialogFrog1.txt");
@@ -106,7 +117,19 @@ public class ScreenSwamp implements Screen {
         if(j.artefacts[ROPE].isReleased) {
             if (j.girl.wannaPlaceX == btnGoCave.girlWannaPlaceX && j.girl.came(j.girl.wannaPlaceX)) {
                 j.girl.setX(SCR_WIDTH/2f);
-                j.setScreen(j.screenCave);
+                girlGoCave = true;
+            }
+        }
+        // идёт в пещеру
+        if(girlGoCave){
+            if(timeGirlGoCave+timeGirlGoInterval< TimeUtils.millis()) {
+                timeGirlGoCave = TimeUtils.millis();
+                fazaGirlGoCave++;
+                if (fazaGirlGoCave == imgGirlUp.length) {
+                    fazaGirlGoCave = 0;
+                    girlGoCave = false;
+                    j.setScreen(j.screenCave);
+                }
             }
         }
 
@@ -175,7 +198,10 @@ public class ScreenSwamp implements Screen {
                 j.batch.draw(j.imgArt[a.name], a.x, a.y, a.width, a.height);
 
         // девочка
-        j.batch.draw(j.imgGirl[j.girl.faza], j.girl.x - j.girl.width / 2, j.girl.y, j.girl.width / 2, 0, j.girl.width, j.girl.height, j.girl.goLeft ? 1 : -1, 1, 0);
+        if(girlGoCave)
+            j.batch.draw(imgGirlUp[fazaGirlGoCave], j.girl.x - j.girl.width / 2+fazaGirlGoCave*10*KY, j.girl.y+fazaGirlGoCave*100*KY, j.girl.height/2, j.girl.height);
+        else
+            j.batch.draw(j.imgGirl[j.girl.faza], j.girl.x - j.girl.width / 2, j.girl.y, j.girl.width / 2, 0, j.girl.width, j.girl.height, j.girl.goLeft ? 1 : -1, 1, 0);
 
         // диалоги
         if(isDialogFrog1) j.fontGame.draw(j.batch, dialogFrog1.get(nDial).words, dialogFrog1.get(nDial).x, dialogFrog1.get(nDial).y);
